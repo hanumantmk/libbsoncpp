@@ -2,7 +2,9 @@ noinst_PROGRAMS = \
 	test-bsoncpp
 
 AM_CPPFLAGS = \
-	-Ibsoncpp \
+	-I $(top_srcdir)/bson \
 	$(BSON_CFLAGS)
 
-test_bsoncpp_SOURCES = tests/test-bsoncpp.c
+test_bsoncpp_SOURCES = $(top_srcdir)/tests/test-bsoncpp.cpp
+
+LDADD = libbsoncpp.la

@@ -1,0 +1,8 @@
+noinst_PROGRAMS = \
+	test-bsoncpp
+
+AM_CPPFLAGS = \
+	-Ibsoncpp \
+	$(BSON_CFLAGS)
+
+test_bsoncpp_SOURCES = tests/test-bsoncpp.c

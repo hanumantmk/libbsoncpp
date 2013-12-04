@@ -1,0 +1,15 @@
+lib_LTLIBRARIES = libbsoncpp.la
+
+REGULAR_H_FILES = \
+	bson/bson.hpp
+	bson/ibson.hpp
+
+libbsoncpp_la_SOURCES = \
+	$(REGULAR_H_FILES) \
+	bson/bson.cpp
+
+libbsoncpp_la_CPPFLAGS = \
+	$(BSON_CFLAGS)
+
+libbsoncpp_la_LIBADD = \
+	$(BSON_LIBS)

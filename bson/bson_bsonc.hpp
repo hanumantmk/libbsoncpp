@@ -11,7 +11,7 @@ namespace BSON {
 
 class BSONC : public Document {
 private:
-   class UTF8;
+   class Type;
 
 private:
    std::shared_ptr<bson_t> bson;

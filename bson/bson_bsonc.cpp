@@ -1,5 +1,7 @@
 #include "bson_bsonc.hpp"
 #include "bson_bsonc_utf8.hpp"
+#include "bson_bsonc_doc.hpp"
+#include "bson_bsonc_array.hpp"
 #include "bson_value_impl_null.hpp"
 
 namespace BSON {
@@ -86,8 +88,14 @@ BSONC::operator [] (const std::string & s)
       r = Value (new Value::Impl::Null ());
    } else {
       switch (bson_iter_type (&iter)) {
+      case BSON_TYPE_ARRAY:
+         r = Value (new BSONC::Type::Array (bson, &iter));
+         break;
+      case BSON_TYPE_DOCUMENT:
+         r = Value (new BSONC::Type::Doc (bson, &iter));
+         break;
       case BSON_TYPE_UTF8:
-         r = Value (new BSONC::UTF8 (bson, bson_iter_utf8 (&iter, NULL)));
+         r = Value (new BSONC::Type::UTF8 (bson, bson_iter_utf8 (&iter, NULL)));
          break;
       default:
          r = Value (new Value::Impl::Null ());

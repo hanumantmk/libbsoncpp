@@ -31,7 +31,7 @@ main (int    argc,
       cout << "not real: " << bson["not real"] << endl << "foo: " << bson["foo"] <<
         endl;
 
-      v = bson["foo"];
+      v = bson["array"];
    }
 
    cout << v << endl;

@@ -14,16 +14,21 @@ main (int    argc,
    {
       BSONC bson(
          "foo", "bar",
-         "baz", "bop",
-         "lol", 10,
-         "doc", BSONC(
+         "bson", BSONC(
             "a", 1,
             "b", 2,
-            "c", 3
+            "c", 3,
+            "doc", BSONC::Doc(
+               "d", NULL,
+               "array", BSONC::Array(
+                  10, 11, 12
+               ),
+               "e", 2,
+               "f", 3
+            )
          ),
-         "array", BSONC::Array(
-            10, 11, 12
-         )
+         "baz", "bop",
+         "lol", 10
       );
 
       cout << bson << endl;
@@ -31,7 +36,7 @@ main (int    argc,
       cout << "not real: " << bson["not real"] << endl << "foo: " << bson["foo"] <<
         endl;
 
-      v = bson["array"];
+      v = bson["bson"];
    }
 
    cout << v << endl;

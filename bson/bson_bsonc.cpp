@@ -9,6 +9,7 @@ BSONC::BSONC(Value::Type t) :
    Document (t),
    bson (bson_new(), &bson_destroy)
 {
+   append_ctx = bson.get();
 }
 
 std::string
@@ -29,7 +30,7 @@ void
 BSONC::append_single (const std::string & key,
                       int32_t             i)
 {
-   bson_append_int32 (bson.get (), key.c_str (), key.length (), i);
+   bson_append_int32 (append_ctx, key.c_str (), key.length (), i);
 }
 
 void
@@ -47,10 +48,10 @@ BSONC::append_single (const std::string & key,
    switch (b.get_type ()) {
       case Value::Type::Root:
       case Value::Type::Document:
-      bson_append_document (bson.get (), key.c_str (), key.length (), &tmp);
+      bson_append_document (append_ctx, key.c_str (), key.length (), &tmp);
       break;
       case Value::Type::Array:
-      bson_append_array (bson.get (), key.c_str (), key.length (), &tmp);
+      bson_append_array (append_ctx, key.c_str (), key.length (), &tmp);
       break;
    default:
       break;
@@ -59,9 +60,16 @@ BSONC::append_single (const std::string & key,
 
 void
 BSONC::append_single (const std::string & key,
+               args_t args)
+{
+   args(key, *this);
+}
+
+void
+BSONC::append_single (const std::string & key,
                       const std::string & s)
 {
-   bson_append_utf8 (bson.get (), key.c_str (), key.length (), s.c_str (),
+   bson_append_utf8 (append_ctx, key.c_str (), key.length (), s.c_str (),
                      s.length ());
 }
 

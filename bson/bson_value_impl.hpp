@@ -12,6 +12,7 @@ public:
 protected:
    Type type;
    Impl (Type t);
+   virtual void magicSizeGuard() const = 0;
 
 public:
    Type
@@ -20,6 +21,8 @@ public:
    virtual ~Impl()
    {
    };
+
+   virtual void clone(Impl * storage) const = 0;
 
    virtual void
    print (std::ostream & stream) const

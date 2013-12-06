@@ -7,9 +7,21 @@
 namespace BSON {
 BSONC::BSONC(Value::Type t) :
    Document (t),
-   bson (bson_new(), &bson_destroy)
+   bson (bson_new(), &bson_destroy),
+   append_ctx (bson.get())
 {
-   append_ctx = bson.get();
+}
+
+BSONC::BSONC(Value::Type t, const std::shared_ptr<bson_t> &b) :
+   Document (t),
+   bson (b),
+   append_ctx (bson.get())
+{
+}
+
+void BSONC::BSONC::clone(Value::Impl * storage) const
+{
+   new (storage) BSONC::BSONC(type, bson);
 }
 
 std::string
@@ -93,20 +105,32 @@ BSONC::operator [] (const std::string & s)
    b = bson_iter_init_find (&iter, bson.get (), s.c_str ());
 
    if (!b) {
-      r = Value (new Value::Impl::Null ());
+      new (r.get_impl()) Value::Impl::Null ();
    } else {
       switch (bson_iter_type (&iter)) {
       case BSON_TYPE_ARRAY:
-         r = Value (new BSONC::Type::Array (bson, &iter));
+      {
+         const bson_uint8_t *buf;
+         bson_uint32_t len;
+
+         bson_iter_array(&iter, &len, &buf);
+         new (r.get_impl()) BSONC::Type::Array (bson, buf, len);
          break;
+      }
       case BSON_TYPE_DOCUMENT:
-         r = Value (new BSONC::Type::Doc (bson, &iter));
+      {
+         const bson_uint8_t *buf;
+         bson_uint32_t len;
+
+         bson_iter_document(&iter, &len, &buf);
+         new (r.get_impl()) BSONC::Type::Doc (bson, buf, len);
          break;
+      }
       case BSON_TYPE_UTF8:
-         r = Value (new BSONC::Type::UTF8 (bson, bson_iter_utf8 (&iter, NULL)));
+         new (r.get_impl()) BSONC::Type::UTF8 (bson, bson_iter_utf8 (&iter, NULL));
          break;
       default:
-         r = Value (new Value::Impl::Null ());
+         new (r.get_impl()) Value::Impl::Null ();
          break;
       }
    }

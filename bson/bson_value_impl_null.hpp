@@ -9,8 +9,12 @@ class Value::Impl::Null : public Value::Impl {
 public:
    Null ();
 
-   virtual void
+   void
    print (std::ostream & stream) const;
+
+   void clone(Impl * storage) const;
+
+   BSONCPP_VALUE_GUARD(Value::Impl::Null)
 };
 
 }

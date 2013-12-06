@@ -26,6 +26,10 @@ protected:
 public:
    BSONC(Value::Type t);
 
+   BSONC(Value::Type t, const std::shared_ptr<bson_t> &b);
+
+   void clone(Impl * storage) const;
+
    template <class ...T>
    BSONC(const T& ...t) : BSONC(Value::Type::Root)
    {
@@ -114,6 +118,8 @@ public:
       append_single (nextKey(), a1);
       append_array (an...);
    }
+
+   BSONCPP_VALUE_GUARD(BSONC)
 };
 
 }

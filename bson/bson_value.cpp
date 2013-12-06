@@ -3,7 +3,35 @@
 
 namespace BSON {
 
-Value::Value() {}
+Value::Value() :
+   impl(static_cast<Impl *>(static_cast<void*>(&storage)))
+{
+}
+
+Value::Value(const Value& other) :
+   Value()
+{
+   other.impl->clone(impl);
+}
+
+
+const Value& Value::operator=( const Value& other)
+{
+   other.impl->clone(impl);
+
+   return *this;
+}
+
+Value::~Value()
+{
+   impl->~Impl();
+}
+
+Value::Impl *
+Value::get_impl ()
+{
+   return impl;
+}
 
 Value::Type
 Value::get_type () const
@@ -25,4 +53,3 @@ std::ostream & operator << (std::ostream & out, const BSON::Value &obj)
 
    return out;
 }
-

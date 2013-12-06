@@ -7,12 +7,18 @@ namespace BSON {
 
 class BSONC::Type::Doc : public BSONC::Type {
 private:
-   bson_t child;
+   class Check;
+   bson_uint32_t len;
+   const bson_uint8_t *buf;
 
 public:
-   Doc (const std::shared_ptr<bson_t> &i, bson_iter_t * t);
+   Doc (const std::shared_ptr<bson_t> &i, const bson_uint8_t *buf, bson_uint32_t len);
+
+   void clone(Impl * storage) const;
 
    void print (std::ostream & stream) const;
+
+   BSONCPP_VALUE_GUARD(BSONC::Type::Doc)
 };
 
 }

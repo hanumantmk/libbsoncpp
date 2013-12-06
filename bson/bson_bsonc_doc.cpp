@@ -14,14 +14,12 @@ void
 BSONC::Type::Doc::print (std::ostream & stream) const
 {
    bson_t child;
+   bson_iter_t iter;
 
    bson_init_static(&child, buf, len);
+   bson_iter_init(&iter, &child);
 
-   char *str = bson_as_json (&child, NULL);
-
-   stream << str;
-
-   free (str);
+   BSONCUtils::pp( stream, &iter, 0, false);
 }
 
 void BSONC::Type::Doc::clone(Value::Impl * storage) const
@@ -30,7 +28,7 @@ void BSONC::Type::Doc::clone(Value::Impl * storage) const
 }
 
 Value
-BSONC::Type::Doc::operator [] (const std::string & s) const
+BSONC::Type::Doc::operator [] (const char * s) const
 {
    bson_t child;
    bson_init_static(&child, buf, len);

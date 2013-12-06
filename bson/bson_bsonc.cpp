@@ -21,10 +21,11 @@ void BSONC::BSONC::clone(Value::Impl * storage) const
    new (storage) BSONC::BSONC(type, bson);
 }
 
-std::string
+const char *
 BSONC::nextKey ()
 {
-   return std::to_string (lastKey++);
+   sprintf(lastKeyBuf, "%d", lastKey++);
+   return (lastKeyBuf);
 }
 
 void
@@ -36,14 +37,14 @@ BSONC::toBson (void  **buf,
 }
 
 void
-BSONC::append_single (const std::string & key,
+BSONC::append_single (const char * key,
                       int32_t             i)
 {
-   bson_append_int32 (append_ctx, key.c_str (), key.length (), i);
+   bson_append_int32 (append_ctx, key, -1, i);
 }
 
 void
-BSONC::append_single (const std::string & key,
+BSONC::append_single (const char * key,
                       const Document &    b)
 {
    void *buf;
@@ -57,10 +58,10 @@ BSONC::append_single (const std::string & key,
    switch (b.get_type ()) {
       case Value::Type::Root:
       case Value::Type::Document:
-      bson_append_document (append_ctx, key.c_str (), key.length (), &tmp);
+      bson_append_document (append_ctx, key, -1, &tmp);
       break;
       case Value::Type::Array:
-      bson_append_array (append_ctx, key.c_str (), key.length (), &tmp);
+      bson_append_array (append_ctx, key, -1, &tmp);
       break;
    default:
       break;
@@ -68,32 +69,31 @@ BSONC::append_single (const std::string & key,
 }
 
 void
-BSONC::append_single (const std::string & key,
+BSONC::append_single (const char * key,
                args_t args)
 {
    args(key, *this);
 }
 
 void
-BSONC::append_single (const std::string & key,
-                      const std::string & s)
+BSONC::append_single (const char * key,
+                      const char * s)
 {
-   bson_append_utf8 (append_ctx, key.c_str (), key.length (), s.c_str (),
-                     s.length ());
+   bson_append_utf8 (append_ctx, key, -1, s, -1);
 }
 
 void
 BSONC::print (std::ostream & out) const
 {
-   char *str = bson_as_json (bson.get (), NULL);
+   bson_iter_t iter;
 
-   out << str;
+   bson_iter_init(&iter, bson.get());
 
-   free (str);
+   BSONCUtils::pp( out, &iter, 0, false);
 }
 
 Value
-BSONC::operator [] (const std::string & s) const
+BSONC::operator [] (const char * s) const
 {
    return BSONCUtils::convert(bson, bson.get(), s);
 }

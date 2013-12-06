@@ -16,7 +16,7 @@ public:
 
    void clone(Impl * storage) const;
 
-   Value operator [] (const std::string & s) const;
+   Value operator [] (const char * s) const;
 
    void print (std::ostream & stream) const;
 

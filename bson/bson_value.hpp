@@ -26,7 +26,7 @@ public:
    };
 
    class Impl;
-   static const size_t storage_size = 50;
+   static const size_t storage_size = 60;
    static const size_t storage_align = 8;
 
 private:
@@ -58,7 +58,7 @@ public:
    const char * to_utf8() const;
    int32_t to_int32() const;
 
-   Value operator [] (const std::string & s) const;
+   Value operator [] (const char * s) const;
    Value operator [] (int i) const;
 
    void

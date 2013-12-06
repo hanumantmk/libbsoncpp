@@ -49,7 +49,7 @@ int32_t Value::to_int32() const
    return impl->to_int32();
 }
 
-Value Value::operator [] (const std::string & s) const
+Value Value::operator [] (const char * s) const
 {
    return (*impl)[s];
 }

@@ -14,14 +14,12 @@ void
 BSONC::Type::Array::print (std::ostream & stream) const
 {
    bson_t child;
+   bson_iter_t iter;
 
    bson_init_static(&child, buf, len);
+   bson_iter_init(&iter, &child);
 
-   char *str = bson_as_json (&child, NULL);
-
-   stream << str;
-
-   free (str);
+   BSONCUtils::pp( stream, &iter, 0, true);
 }
 
 void BSONC::Type::Array::clone(Value::Impl * storage) const
@@ -35,7 +33,10 @@ BSONC::Type::Array::operator [] (int i) const
    bson_t child;
    bson_init_static(&child, buf, len);
 
-   return BSONCUtils::convert(bson, &child, std::to_string (i));
+   char str[30];
+   sprintf(str, "%d", i);
+
+   return BSONCUtils::convert(bson, &child, str);
 }
 
 }

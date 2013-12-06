@@ -28,7 +28,7 @@ public:
    virtual const char * to_utf8() const;
    virtual int32_t to_int32() const;
 
-   virtual Value operator [] (const std::string & s) const;
+   virtual Value operator [] (const char * s) const;
    virtual Value operator [] (int i) const;
 
    virtual void

@@ -23,7 +23,7 @@ int32_t Value::Impl::to_int32() const
    throw Value::Exception("No conversion to int32");
 }
 
-Value Value::Impl::operator[](const std::string & str) const
+Value Value::Impl::operator[](const char * str) const
 {
    throw Value::Exception("No conversion to document available");
 }

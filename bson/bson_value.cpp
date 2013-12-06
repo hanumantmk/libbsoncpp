@@ -39,6 +39,26 @@ Value::get_type () const
    return impl->get_type ();
 }
 
+const char * Value::to_utf8() const
+{
+   return impl->to_utf8();
+}
+
+int32_t Value::to_int32() const
+{
+   return impl->to_int32();
+}
+
+Value Value::operator [] (const std::string & s) const
+{
+   return (*impl)[s];
+}
+
+Value Value::operator [] (int i) const
+{
+   return (*impl)[i];
+}
+
 void
 Value::print (std::ostream & stream) const
 {

@@ -14,6 +14,8 @@ public:
 
    void clone(Impl * storage) const;
 
+   const char * to_utf8() const;
+
    void print (std::ostream & stream) const;
 
    BSONCPP_VALUE_GUARD(BSONC::Type::UTF8)

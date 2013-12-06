@@ -36,12 +36,12 @@ main (int    argc,
       cout << "not real: " << bson["not real"] << endl << "foo: " << bson["foo"] <<
         endl;
 
-      v = bson["bson"];
+      v = bson["bson"]["doc"]["array"];
    }
 
    cout << v << endl;
 
    Value z = std::move(v);
 
-   cout << z << endl;
+   cout << z[1] << endl;
 }

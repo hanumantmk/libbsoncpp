@@ -1,4 +1,5 @@
 #include "bson_bsonc_array.hpp"
+#include "bson_bsonc_utils.hpp"
 
 namespace BSON {
 
@@ -26,6 +27,15 @@ BSONC::Type::Array::print (std::ostream & stream) const
 void BSONC::Type::Array::clone(Value::Impl * storage) const
 {
    new (storage) BSONC::Type::Array(bson, buf, len);
+}
+
+Value
+BSONC::Type::Array::operator [] (int i) const
+{
+   bson_t child;
+   bson_init_static(&child, buf, len);
+
+   return BSONCUtils::convert(bson, &child, std::to_string (i));
 }
 
 }

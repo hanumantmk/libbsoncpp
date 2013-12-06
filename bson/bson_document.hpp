@@ -33,7 +33,7 @@ public:
    append_single (const std::string & key,
                   const Document &b) = 0;
 
-   virtual Value operator [] (const std::string & s) = 0;
+   virtual Value operator [] (const std::string & s) const = 0;
 
    template <class T>
    void append_doc (const std::string & key, const T& t)

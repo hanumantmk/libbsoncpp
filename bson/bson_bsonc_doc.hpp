@@ -16,6 +16,8 @@ public:
 
    void clone(Impl * storage) const;
 
+   Value operator [] (const std::string & s) const;
+
    void print (std::ostream & stream) const;
 
    BSONCPP_VALUE_GUARD(BSONC::Type::Doc)

@@ -13,7 +13,6 @@ namespace BSON {
 class BSONC : public Document {
 private:
    typedef std::function<void(const std::string &key, BSONC &b)> args_t;
-   class Type;
 
 private:
    std::shared_ptr<bson_t> bson;
@@ -24,6 +23,8 @@ protected:
    std::string nextKey ();
 
 public:
+   class Type;
+
    BSONC(Value::Type t);
 
    BSONC(Value::Type t, const std::shared_ptr<bson_t> &b);
@@ -91,7 +92,7 @@ public:
    void
    print(std::ostream & stream) const;
 
-   Value operator [] (const std::string & s);
+   Value operator [] (const std::string & s) const;
 
    template <class T>
    void append_doc (const std::string & key, const T& t)

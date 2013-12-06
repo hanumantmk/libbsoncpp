@@ -5,6 +5,8 @@
 #include <memory>
 #include <iostream>
 
+#include "bson_exception.hpp"
+
 #define BSONCPP_VALUE_GUARD(name) \
 protected: \
    void magicSizeGuard() const { \
@@ -16,6 +18,13 @@ namespace BSON {
 
 class Value {
 public:
+   class Exception : BSON::Exception {
+   public:
+      Exception (const char *msg) : BSON::Exception (msg)
+      {
+      }
+   };
+
    class Impl;
    static const size_t storage_size = 50;
    static const size_t storage_align = 8;
@@ -31,6 +40,7 @@ public:
       Document,
       Array,
       Null,
+      Int32,
       UTF8,
    };
 
@@ -44,6 +54,12 @@ public:
    get_impl();
 
    Type get_type () const;
+
+   const char * to_utf8() const;
+   int32_t to_int32() const;
+
+   Value operator [] (const std::string & s) const;
+   Value operator [] (int i) const;
 
    void
    print (std::ostream & stream) const;

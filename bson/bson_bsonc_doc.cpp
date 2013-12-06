@@ -1,4 +1,5 @@
 #include "bson_bsonc_doc.hpp"
+#include "bson_bsonc_utils.hpp"
 
 namespace BSON {
 
@@ -26,6 +27,15 @@ BSONC::Type::Doc::print (std::ostream & stream) const
 void BSONC::Type::Doc::clone(Value::Impl * storage) const
 {
    new (storage) BSONC::Type::Doc(bson, buf, len);
+}
+
+Value
+BSONC::Type::Doc::operator [] (const std::string & s) const
+{
+   bson_t child;
+   bson_init_static(&child, buf, len);
+
+   return BSONCUtils::convert(bson, &child, s);
 }
 
 }

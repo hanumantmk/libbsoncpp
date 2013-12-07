@@ -18,6 +18,7 @@ REGULAR_H_FILES = \
 libbsoncpp_la_SOURCES = \
 	$(REGULAR_H_FILES) \
 	$(top_srcdir)/bson/bson_bsonc.cpp \
+	$(top_srcdir)/bson/bson_bsonc_append.cpp \
 	$(top_srcdir)/bson/bson_bsonc_utf8.cpp \
 	$(top_srcdir)/bson/bson_bsonc_array.cpp \
 	$(top_srcdir)/bson/bson_bsonc_doc.cpp \

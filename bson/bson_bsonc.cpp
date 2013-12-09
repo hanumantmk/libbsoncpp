@@ -42,6 +42,11 @@ const char * BSONC::nextKey()
    return impl->nextKey();
 }
 
+bool BSONC::is_array()
+{
+   return impl->is_array();
+}
+
 void
 BSONC::toBson (void  **buf,
                size_t *len) const
@@ -81,6 +86,20 @@ BSONC::append_single ( const char * key,
    default:
       break;
    }
+}
+
+void
+BSONC::append_single ( const char * key,
+               const Token::Doc & t)
+{
+   impl->push(key, false);
+}
+
+void
+BSONC::append_single ( const char * key,
+               const Token::Array & t)
+{
+   impl->push(key, true);
 }
 
 void

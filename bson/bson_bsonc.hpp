@@ -16,6 +16,22 @@ private:
    class Impl;
    class Type;
 
+   class Token {
+   public:
+      class Array {
+      public:
+         Array() {}
+      };
+      class Doc {
+      public:
+         Doc() {}
+      };
+      class End {
+      public:
+         End() {}
+      };
+   };
+
    typedef std::function<void( const char * key, BSONC &b)> args_t;
 
 private:
@@ -25,6 +41,7 @@ private:
 void push(const char * key, bool is_array);
 void pop();
 const char * nextKey();
+bool is_array();
 
 public:
    BSONC();
@@ -36,6 +53,21 @@ public:
    BSONC(const T& ...t) : BSONC(Value::Type::Root)
    {
       append_doc (t...);
+   }
+
+   static Token::Array TArray()
+   {
+      return Token::Array();
+   }
+
+   static Token::Doc TDoc()
+   {
+      return Token::Doc();
+   }
+
+   static Token::End TEnd()
+   {
+      return Token::End();
    }
 
    template <class ...T>
@@ -79,6 +111,14 @@ public:
                   args_t args);
 
    void
+   append_single ( const char * key,
+                   const Token::Array & t);
+
+   void
+   append_single ( const char * key,
+                   const Token::Doc & t);
+
+   void
    print(std::ostream & stream) const;
 
    Value operator [] (const char * s) const;
@@ -96,6 +136,25 @@ public:
       append_doc (an...);
    }
 
+   template <class ...ArgN>
+   void append_doc( const char * key, const Token::Array& a, const ArgN& ...an)
+   {
+      append_single (key, a);
+
+      append_array (an...);
+   }
+
+   template <class ...ArgN>
+   void append_doc( const Token::End & e, const ArgN& ...an)
+   {
+      pop();
+      if (is_array()) {
+         append_array (an...);
+      } else {
+         append_doc (an...);
+      }
+   }
+
    template <class T>
    void append_array ( const T& t)
    {
@@ -107,6 +166,24 @@ public:
    {
       append_single (nextKey(), a1);
       append_array (an...);
+   }
+
+   template <class ...ArgN>
+   void append_array( const Token::Doc &d,  const ArgN& ...an)
+   {
+      append_single (nextKey(), d);
+      append_doc (an...);
+   }
+
+   template <class ...ArgN>
+   void append_array ( const Token::End & e, const ArgN& ...an)
+   {
+      pop();
+      if (is_array()) {
+         append_array (an...);
+      } else {
+         append_doc (an...);
+      }
    }
 
    BSONCPP_VALUE_GUARD(BSONC)

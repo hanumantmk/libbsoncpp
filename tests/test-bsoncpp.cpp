@@ -20,9 +20,8 @@ main (int    argc,
             "c", 3,
             "doc", BSONC::Doc(
                "d", NULL,
-               "array", BSONC::Array(
-                  10, 11, 12
-               ),
+               "array", BSONC::Array( 10, 11, 12),
+               "array", BSONC::TArray(), 10, 11, 12, BSONC::TEnd(),
                "e", 2,
                "f", 3
             )

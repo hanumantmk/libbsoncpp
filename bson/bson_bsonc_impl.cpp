@@ -9,38 +9,55 @@ BSONC::Impl::Impl()
 
 BSONC::Impl::~Impl()
 {
-   while(! stack.empty()) {
+   while(depth >= 0) {
       pop();
    }
 
    bson_destroy(&root);
 }
 
+BSONC::Impl::AppendLayer * BSONC::Impl::_top(int offset = 0)
+{
+   return static_cast<BSONC::Impl::AppendLayer *>(static_cast<void *>(&stack[depth + offset]));
+}
+
 const char * BSONC::Impl::nextKey ()
 {
-   sprintf(lastKeyBuf, "%d", stack.top().lastKey++);
+   sprintf(lastKeyBuf, "%d", _top()->lastKey++);
    return (lastKeyBuf);
 }
 
 bson_t * BSONC::Impl::top()
 {
-   if (stack.empty()) {
+   if (depth < 0) {
       return &root;
    } else {
-      return &stack.top().bson;
+      return &_top()->bson;
    }
 }
 
 bson_t * BSONC::Impl::push(const char * key, bool is_array)
 {
-   stack.emplace( top(), key, is_array);
+   new (_top(1)) AppendLayer( top(), key, is_array);
+
+   depth++;
 
    return top();
 }
 
+bool BSONC::Impl::is_array()
+{
+   if (depth < 0) {
+      return false;
+   } else {
+      return _top()->is_array;
+   }
+}
+
 void BSONC::Impl::pop()
 {
-   stack.pop();
+   _top()->~AppendLayer();
+   depth--;
 }
 
 }

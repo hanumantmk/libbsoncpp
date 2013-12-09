@@ -12,21 +12,35 @@ main (int    argc,
    Value v;
 
    {
-      BSONC bson(
+      BSONC bson;
+      bson.append(
          "foo", "bar",
          "bson", BSONC(
             "a", 1,
             "b", 2,
             "c", 3,
-            "doc", BSONC::Doc(
+            "doc", '{',
                "d", NULL,
-               "array", BSONC::Array( 10, 11, 12),
                "array", BSONC::TArray(), 10, 11, 12, BSONC::TEnd(),
+               "array", '[', 10, 11, 12, ']',
                "e", 2,
-               "f", 3
-            )
+               "f", 3,
+            '}'
          ),
          "baz", "bop",
+         "array", '[', 10, 11, 12, ']'
+      ).append(
+         "array", '[', 10, 11, 12, ']'
+      ).append(
+         "array", '[', 10, 11, 12
+      ).append(
+         10, 11, 12
+      ).append(
+         10, 11, 12
+      ).append(
+         10, 11, 12
+      ).append(
+         ']',
          "lol", 10
       );
 

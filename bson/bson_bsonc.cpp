@@ -24,7 +24,7 @@ BSONC::BSONC(Value::Type t, const std::shared_ptr<BSONC::Impl> &i) :
 
 void BSONC::clone(Value::Impl * storage) const
 {
-   new (storage) BSONC::BSONC(type, impl);
+   new (storage) BSONC(type, impl);
 }
 
 void BSONC::push(const char *key, bool is_array)

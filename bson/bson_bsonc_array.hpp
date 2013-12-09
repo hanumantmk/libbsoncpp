@@ -11,9 +11,9 @@ private:
    const bson_uint8_t *buf;
 
 public:
-   Array (const std::shared_ptr<bson_t> &i, const bson_uint8_t *buf, bson_uint32_t len);
+   Array (const std::shared_ptr<BSONC::Impl> &i, const bson_uint8_t *buf, bson_uint32_t len);
 
-   void clone(Impl * storage) const;
+   void clone(Value::Impl * storage) const;
 
    Value operator [] (int i) const;
 

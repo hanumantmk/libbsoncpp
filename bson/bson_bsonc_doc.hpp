@@ -7,14 +7,13 @@ namespace BSON {
 
 class BSONC::Type::Doc : public BSONC::Type {
 private:
-   class Check;
    bson_uint32_t len;
    const bson_uint8_t *buf;
 
 public:
-   Doc (const std::shared_ptr<bson_t> &i, const bson_uint8_t *buf, bson_uint32_t len);
+   Doc (const std::shared_ptr<BSONC::Impl> &i, const bson_uint8_t *buf, bson_uint32_t len);
 
-   void clone(Impl * storage) const;
+   void clone(Value::Impl * storage) const;
 
    Value operator [] (const char * s) const;
 

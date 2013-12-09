@@ -9,6 +9,7 @@ REGULAR_H_FILES = \
 	$(top_srcdir)/bson/bson_value_impl_null.hpp \
 	$(top_srcdir)/bson/bson_value_impl_int32.hpp \
 	$(top_srcdir)/bson/bson_bsonc.hpp \
+	$(top_srcdir)/bson/bson_bsonc_impl.hpp \
 	$(top_srcdir)/bson/bson_bsonc_utils.hpp \
 	$(top_srcdir)/bson/bson_bsonc_type.hpp \
 	$(top_srcdir)/bson/bson_bsonc_array.hpp \
@@ -19,6 +20,7 @@ libbsoncpp_la_SOURCES = \
 	$(REGULAR_H_FILES) \
 	$(top_srcdir)/bson/bson_bsonc.cpp \
 	$(top_srcdir)/bson/bson_bsonc_append.cpp \
+	$(top_srcdir)/bson/bson_bsonc_impl.cpp \
 	$(top_srcdir)/bson/bson_bsonc_utf8.cpp \
 	$(top_srcdir)/bson/bson_bsonc_array.cpp \
 	$(top_srcdir)/bson/bson_bsonc_doc.cpp \

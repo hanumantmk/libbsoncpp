@@ -13,10 +13,10 @@ public:
    class Array;
 
 private:
-   std::shared_ptr<bson_t> bson;
+   std::shared_ptr<BSONC::Impl> impl;
 
 public:
-   Type (Value::Type t, const std::shared_ptr<bson_t> &b);
+   Type (Value::Type t, const std::shared_ptr<BSONC::Impl> &b);
 
    virtual ~Type() {};
 };

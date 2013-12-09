@@ -3,7 +3,7 @@
 
 namespace BSON {
 
-BSONC::Type::Array::Array (const std::shared_ptr<bson_t> &i, const bson_uint8_t *b, bson_uint32_t l) :
+BSONC::Type::Array::Array (const std::shared_ptr<BSONC::Impl> &i, const bson_uint8_t *b, bson_uint32_t l) :
    BSONC::Type (Value::Type::Array, i),
    len(l),
    buf(b)
@@ -24,7 +24,7 @@ BSONC::Type::Array::print (std::ostream & stream) const
 
 void BSONC::Type::Array::clone(Value::Impl * storage) const
 {
-   new (storage) BSONC::Type::Array(bson, buf, len);
+   new (storage) BSONC::Type::Array(impl, buf, len);
 }
 
 Value
@@ -36,7 +36,7 @@ BSONC::Type::Array::operator [] (int i) const
    char str[30];
    sprintf(str, "%d", i);
 
-   return BSONCUtils::convert(bson, &child, str);
+   return BSONCUtils::convert(impl, &child, str);
 }
 
 }

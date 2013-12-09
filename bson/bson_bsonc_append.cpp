@@ -1,54 +1,24 @@
-#include "bson_bsonc.hpp"
+#include "bson_bsonc_impl.hpp"
 
 namespace BSON {
 
-BSONC::AppendCtx::AppendCtx(bson_t *b) :
-   root(b)
+BSONC::Impl::AppendLayer::AppendLayer(bson_t *parent, const char * key, bool is_array) :
+   parent(parent),
+   is_array(is_array)
 {
-}
-
-const char * BSONC::AppendCtx::nextKey ()
-{
-   sprintf(lastKeyBuf, "%d", stack[depth].lastKey++);
-   return (lastKeyBuf);
-}
-
-bson_t * BSONC::AppendCtx::top()
-{
-   if (depth >= 0) {
-      return &(stack[depth].bson);
-   } else {
-      return root;
-   }
-}
-
-bson_t * BSONC::AppendCtx::push(const char * key, bool is_array)
-{
-   bson_t *child = &(stack[depth + 1].bson);
-
    if (is_array) {
-      bson_append_array_begin(top(), key, -1, child);
+      bson_append_array_begin(parent, key, -1, &bson);
    } else {
-      bson_append_document_begin(top(), key, -1, child);
+      bson_append_document_begin(parent, key, -1, &bson);
    }
-
-   depth++;
-
-   stack[depth].lastKey = 0;
-   stack[depth].is_array = is_array;
-
-   return top();
 }
 
-void BSONC::AppendCtx::pop()
+BSONC::Impl::AppendLayer::~AppendLayer()
 {
-   bson_t *child = top();
-   depth--;
-
-   if (stack[depth + 1].is_array) {
-      bson_append_array_end(top(), child);
+   if (is_array) {
+      bson_append_array_end(parent, &bson);
    } else {
-      bson_append_document_end(top(), child);
+      bson_append_document_end(parent, &bson);
    }
 }
 

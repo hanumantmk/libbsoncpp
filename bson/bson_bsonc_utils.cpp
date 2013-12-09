@@ -2,6 +2,7 @@
 #include "bson_bsonc_utf8.hpp"
 #include "bson_bsonc_doc.hpp"
 #include "bson_bsonc_array.hpp"
+#include "bson_bsonc_impl.hpp"
 #include "bson_value_impl_null.hpp"
 #include "bson_value_impl_int32.hpp"
 
@@ -75,7 +76,7 @@ void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool 
    }
 }
 
-Value BSONCUtils::convert (const std::shared_ptr<bson_t> & root, const bson_t * bson, const char * key)
+Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson_t * bson, const char * key)
 {
    Value r;
    bson_iter_t iter;
@@ -93,7 +94,7 @@ Value BSONCUtils::convert (const std::shared_ptr<bson_t> & root, const bson_t * 
          bson_uint32_t len;
 
          bson_iter_array(&iter, &len, &buf);
-         new (r.get_impl()) BSONC::Type::Array (root, buf, len);
+         new (r.get_impl()) BSONC::Type::Array (impl, buf, len);
          break;
       }
       case BSON_TYPE_DOCUMENT:
@@ -102,11 +103,11 @@ Value BSONCUtils::convert (const std::shared_ptr<bson_t> & root, const bson_t * 
          bson_uint32_t len;
 
          bson_iter_document(&iter, &len, &buf);
-         new (r.get_impl()) BSONC::Type::Doc (root, buf, len);
+         new (r.get_impl()) BSONC::Type::Doc (impl, buf, len);
          break;
       }
       case BSON_TYPE_UTF8:
-         new (r.get_impl()) BSONC::Type::UTF8 (root, bson_iter_utf8 (&iter, NULL));
+         new (r.get_impl()) BSONC::Type::UTF8 (impl, bson_iter_utf8 (&iter, NULL));
          break;
       case BSON_TYPE_INT32:
          new (r.get_impl()) Value::Impl::Int32 (bson_iter_int32 (&iter));

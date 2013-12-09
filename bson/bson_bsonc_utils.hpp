@@ -8,7 +8,7 @@ namespace BSON {
 
 class BSONCUtils {
 public:
-   static Value convert (const std::shared_ptr<bson_t> & root, const bson_t * bson, const char * key);
+   static Value convert (const std::shared_ptr<BSONC::Impl> & impl, const bson_t * bson, const char * key);
    static void pp (std::ostream & stream, bson_iter_t *iter, int indent, bool is_array);
 };
 

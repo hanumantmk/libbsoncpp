@@ -10,9 +10,9 @@ private:
    const char *val;
 
 public:
-   UTF8 (const std::shared_ptr<bson_t> &b, const char *v);
+   UTF8 (const std::shared_ptr<BSONC::Impl> &b, const char *v);
 
-   void clone(Impl * storage) const;
+   void clone(Value::Impl * storage) const;
 
    const char * to_utf8() const;
 

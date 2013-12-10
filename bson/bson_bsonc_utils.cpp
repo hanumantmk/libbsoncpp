@@ -94,7 +94,7 @@ Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson
          bson_uint32_t len;
 
          bson_iter_array(&iter, &len, &buf);
-         new (r.get_impl()) BSONC::Type::Array (impl, buf, len);
+         new (r.get_impl()) BSONC::Types::Array (impl, buf, len);
          break;
       }
       case BSON_TYPE_DOCUMENT:
@@ -103,11 +103,11 @@ Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson
          bson_uint32_t len;
 
          bson_iter_document(&iter, &len, &buf);
-         new (r.get_impl()) BSONC::Type::Doc (impl, buf, len);
+         new (r.get_impl()) BSONC::Types::Doc (impl, buf, len);
          break;
       }
       case BSON_TYPE_UTF8:
-         new (r.get_impl()) BSONC::Type::UTF8 (impl, bson_iter_utf8 (&iter, NULL));
+         new (r.get_impl()) BSONC::Types::UTF8 (impl, bson_iter_utf8 (&iter, NULL));
          break;
       case BSON_TYPE_INT32:
          new (r.get_impl()) Value::Impl::Int32 (bson_iter_int32 (&iter));

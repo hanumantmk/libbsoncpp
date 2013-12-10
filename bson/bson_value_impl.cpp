@@ -2,17 +2,6 @@
 
 namespace BSON {
 
-Value::Impl::Impl(Value::Type t) :
-   type(t)
-{
-}
-
-Value::Type
-Value::Impl::get_type() const
-{
-   return type;
-}
-
 const char * Value::Impl::to_utf8() const
 {
    throw Value::Exception("No conversion to UTF8");

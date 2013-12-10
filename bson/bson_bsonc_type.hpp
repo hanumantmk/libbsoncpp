@@ -6,17 +6,20 @@
 
 namespace BSON {
 
+template <Value::Type t>
 class BSONC::Type : public Value::Impl {
-public:
-   class UTF8;
-   class Doc;
-   class Array;
-
-private:
+protected:
    std::shared_ptr<BSONC::Impl> impl;
 
 public:
-   Type (Value::Type t, const std::shared_ptr<BSONC::Impl> &b);
+   Type (const std::shared_ptr<BSONC::Impl> &b) :
+      impl(b)
+   {
+   }
+
+   Value::Type get_type() const {
+      return t;
+   }
 
    virtual ~Type() {};
 };

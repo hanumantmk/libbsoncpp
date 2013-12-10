@@ -14,7 +14,16 @@ class BSONC : public Document {
 private:
    friend class BSONCUtils;
    class Impl;
+
+   template <Value::Type t>
    class Type;
+
+   class Types {
+      public:
+      class Doc;
+      class Array;
+      class UTF8;
+   };
 
    class Token {
    public:
@@ -35,7 +44,7 @@ private:
    typedef std::function<void( const char * key, BSONC &b)> args_t;
 
 private:
-   BSONC(Value::Type t, const std::shared_ptr<Impl> &i);
+   BSONC(const std::shared_ptr<Impl> &i);
    std::shared_ptr<Impl> impl;
 
 void push(const char * key, bool is_array);
@@ -45,12 +54,12 @@ bool is_array();
 
 public:
    BSONC();
-   BSONC(Value::Type t);
 
+   Value::Type get_type () const;
    void clone(Value::Impl * storage) const;
 
    template <class ...T>
-   BSONC(const T& ...t) : BSONC(Value::Type::Root)
+   BSONC(const T& ...t) : BSONC()
    {
       append_doc (t...);
    }

@@ -4,27 +4,25 @@
 
 namespace BSON {
 BSONC::BSONC() :
-   Document (Value::Type::Root),
    impl (new BSONC::Impl())
 {
 
 }
 
-BSONC::BSONC(Value::Type t) :
-   Document (t),
-   impl (new BSONC::Impl())
-{
-}
-
-BSONC::BSONC(Value::Type t, const std::shared_ptr<BSONC::Impl> &i) :
-   Document (t),
+BSONC::BSONC(const std::shared_ptr<BSONC::Impl> &i) :
    impl (i)
 {
 }
 
+
+Value::Type BSONC::get_type () const
+{
+   return Value::Type::Document;
+}
+
 void BSONC::clone(Value::Impl * storage) const
 {
-   new (storage) BSONC(type, impl);
+   new (storage) BSONC(impl);
 }
 
 void BSONC::push(const char *key, bool is_array)
@@ -76,7 +74,6 @@ BSONC::append_single ( const char * key,
    bson_init_static (&tmp, (const bson_uint8_t *)buf, len);
 
    switch (b.get_type ()) {
-      case Value::Type::Root:
       case Value::Type::Document:
       bson_append_document (impl->top(), key, -1, &tmp);
       break;

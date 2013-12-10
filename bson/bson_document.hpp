@@ -11,8 +11,6 @@ namespace BSON {
 
 class Document : public Value::Impl {
 public:
-   Document(Value::Type t) : Impl(t) {}
-
    virtual void
    toBson (void  **buf,
            size_t *len) const = 0;

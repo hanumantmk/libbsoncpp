@@ -9,6 +9,8 @@ class Value::Impl::Null : public Value::Impl {
 public:
    Null ();
 
+   Value::Type get_type() const;
+
    void
    print (std::ostream & stream) const;
 

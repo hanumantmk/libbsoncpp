@@ -12,6 +12,8 @@ private:
 public:
    Int32 (int32_t i);
 
+   Value::Type get_type() const;
+
    void
    print (std::ostream & stream) const;
 

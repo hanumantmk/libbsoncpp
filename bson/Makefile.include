@@ -25,7 +25,6 @@ libbsoncpp_la_SOURCES = \
 	$(top_srcdir)/bson/bson_bsonc_array.cpp \
 	$(top_srcdir)/bson/bson_bsonc_doc.cpp \
 	$(top_srcdir)/bson/bson_bsonc_utils.cpp \
-	$(top_srcdir)/bson/bson_bsonc_type.cpp \
 	$(top_srcdir)/bson/bson_value.cpp \
 	$(top_srcdir)/bson/bson_value_impl.cpp \
 	$(top_srcdir)/bson/bson_value_impl_int32.cpp \

@@ -3,15 +3,15 @@
 
 namespace BSON {
 
-BSONC::Type::Array::Array (const std::shared_ptr<BSONC::Impl> &i, const bson_uint8_t *b, bson_uint32_t l) :
-   BSONC::Type (Value::Type::Array, i),
+BSONC::Types::Array::Array (const std::shared_ptr<BSONC::Impl> &i, const bson_uint8_t *b, bson_uint32_t l) :
+   BSONC::Type<Value::Type::Array> (i),
    len(l),
    buf(b)
 {
 }
 
 void
-BSONC::Type::Array::print (std::ostream & stream) const
+BSONC::Types::Array::print (std::ostream & stream) const
 {
    bson_t child;
    bson_iter_t iter;
@@ -22,13 +22,13 @@ BSONC::Type::Array::print (std::ostream & stream) const
    BSONCUtils::pp( stream, &iter, 0, true);
 }
 
-void BSONC::Type::Array::clone(Value::Impl * storage) const
+void BSONC::Types::Array::clone(Value::Impl * storage) const
 {
-   new (storage) BSONC::Type::Array(impl, buf, len);
+   new (storage) BSONC::Types::Array(impl, buf, len);
 }
 
 Value
-BSONC::Type::Array::operator [] (int i) const
+BSONC::Types::Array::operator [] (int i) const
 {
    bson_t child;
    bson_init_static(&child, buf, len);

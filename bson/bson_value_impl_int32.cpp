@@ -3,9 +3,14 @@
 namespace BSON {
 
 Value::Impl::Int32::Int32 (int32_t i) :
-   Value::Impl(Value::Type::Int32),
    val(i)
 {
+}
+
+Value::Type
+Value::Impl::Int32::get_type() const
+{
+   return Value::Type::Int32;
 }
 
 void Value::Impl::Int32::print (std::ostream & stream) const

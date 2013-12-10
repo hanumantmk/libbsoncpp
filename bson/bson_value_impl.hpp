@@ -11,13 +11,10 @@ public:
    class Int32;
 
 protected:
-   Type type;
-   Impl (Type t);
    virtual void magicSizeGuard() const = 0;
 
 public:
-   Type
-   get_type () const;
+   virtual Type get_type () const = 0;
 
    virtual ~Impl()
    {

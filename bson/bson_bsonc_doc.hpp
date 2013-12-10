@@ -5,7 +5,7 @@
 
 namespace BSON {
 
-class BSONC::Type::Doc : public BSONC::Type {
+class BSONC::Types::Doc : public BSONC::Type<Value::Type::Document> {
 private:
    bson_uint32_t len;
    const bson_uint8_t *buf;
@@ -19,7 +19,7 @@ public:
 
    void print (std::ostream & stream) const;
 
-   BSONCPP_VALUE_GUARD(BSONC::Type::Doc)
+   BSONCPP_VALUE_GUARD(BSONC::Types::Doc)
 };
 
 }

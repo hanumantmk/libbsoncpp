@@ -9,9 +9,15 @@ int
 main (int    argc,
       char **argv)
 {
-   Value v;
+   int num;
 
-   {
+   if (argc == 2) {
+      num = atoi(argv[1]);
+   } else {
+      num = 1;
+   }
+
+   for (int i = 0; i < num; i++) {
       BSONC bson;
       bson.append(
          "foo", "bar",
@@ -50,12 +56,6 @@ main (int    argc,
       cout << "not real: " << bson["not real"] << endl << "foo: " << bson["foo"] <<
         endl;
 
-      v = bson["bson"]["doc"]["array"];
+      cout << bson["bson"]["doc"]["array"];
    }
-
-   cout << v << endl;
-
-   Value z = std::move(v);
-
-   cout << z[1] << endl;
 }

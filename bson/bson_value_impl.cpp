@@ -12,6 +12,11 @@ int32_t Value::Impl::to_int32() const
    throw Value::Exception("No conversion to int32");
 }
 
+std::tuple<const uint8_t *, size_t> Value::Impl::to_bson() const
+{
+   throw Value::Exception("No conversion to bson");
+}
+
 Value Value::Impl::operator[](const char * str) const
 {
    throw Value::Exception("No conversion to document available");

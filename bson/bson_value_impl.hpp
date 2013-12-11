@@ -6,10 +6,6 @@
 namespace BSON {
 
 class Value::Impl {
-public:
-   class Null;
-   class Int32;
-
 protected:
    virtual void magicSizeGuard() const = 0;
 
@@ -24,6 +20,7 @@ public:
 
    virtual const char * to_utf8() const;
    virtual int32_t to_int32() const;
+   virtual std::tuple<const uint8_t *, size_t> to_bson() const;
 
    virtual Value operator [] (const char * s) const;
    virtual Value operator [] (int i) const;

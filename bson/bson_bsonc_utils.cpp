@@ -2,9 +2,7 @@
 #include "bson_bsonc_utf8.hpp"
 #include "bson_bsonc_doc.hpp"
 #include "bson_bsonc_array.hpp"
-#include "bson_bsonc_impl.hpp"
-#include "bson_value_impl_null.hpp"
-#include "bson_value_impl_int32.hpp"
+#include "bson_types.hpp"
 
 namespace BSON {
 
@@ -85,7 +83,7 @@ Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson
    b = bson_iter_init_find (&iter, bson, key);
 
    if (!b) {
-      new (r.get_impl()) Value::Impl::Null ();
+      new (r.get_impl()) Types::Null ();
    } else {
       switch (bson_iter_type (&iter)) {
       case BSON_TYPE_ARRAY:
@@ -110,10 +108,10 @@ Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson
          new (r.get_impl()) BSONC::Types::UTF8 (impl, bson_iter_utf8 (&iter, NULL));
          break;
       case BSON_TYPE_INT32:
-         new (r.get_impl()) Value::Impl::Int32 (bson_iter_int32 (&iter));
+         new (r.get_impl()) Types::Int32 (bson_iter_int32 (&iter));
          break;
       default:
-         new (r.get_impl()) Value::Impl::Null ();
+         new (r.get_impl()) Types::Null ();
          break;
       }
    }

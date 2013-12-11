@@ -5,7 +5,7 @@
 
 namespace BSON {
 
-class BSONC::Types::UTF8 : public BSONC::Type<Value::Type::UTF8> {
+class BSONC::Types::UTF8 : public BSONC::Type<Value::Type::Utf8> {
 private:
    const char *val;
 
@@ -18,7 +18,7 @@ public:
 
    void print (std::ostream & stream) const;
 
-   BSONCPP_VALUE_GUARD(BSONC::Types::UTF8)
+   BSONCPP_VALUE_GUARD
 };
 
 }

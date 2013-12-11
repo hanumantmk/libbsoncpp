@@ -46,15 +46,13 @@ void BSONC::push(const char *key, bool is_array)
    impl->push(key, is_array);
 }
 
-void BSONC::pop(bool arr)
+bool BSONC::in_progress()
 {
-   if (impl->top() == impl->bottom()) {
-      throwArgs("", "Attempting to close the root document");
-   }
+   return impl->top() != impl->bottom();
+}
 
-   if (arr != is_array()) {
-      throwArgs("", "mismatched sub document close");
-   }
+void BSONC::pop()
+{
    impl->pop();
 }
 
@@ -68,51 +66,43 @@ bool BSONC::is_array()
    return impl->is_array();
 }
 
-void
-BSONC::toBson (void  **buf,
-               size_t *len) const
+std::tuple<const uint8_t *, size_t> BSONC::to_bson() const
 {
    bson_t *bson = impl->bottom();
-   *buf = (void *)bson_get_data (bson);
-   *len = bson->len;
+   return make_tuple(bson_get_data (bson), bson->len);
 }
 
 void
 BSONC::append_single ( const char * key,
-                      int32_t             i)
+                      const Value&    v)
 {
-   bson_append_int32 (impl->top(), key, -1, i);
-}
-
-void
-BSONC::append_single ( const char * key,
-                      const Document &    b)
-{
-   void *buf;
-   size_t len;
-   bson_t tmp;
-
-   b.toBson (&buf, &len);
-
-   bson_init_static (&tmp, (const bson_uint8_t *)buf, len);
-
-   switch (b.get_type ()) {
+   switch (v.get_type()) {
+      case Value::Type::Utf8:
+         bson_append_utf8(impl->top(), key, -1, v.to_utf8(), -1);
+         break;
+      case Value::Type::Int32:
+         bson_append_int32(impl->top(), key, -1, v.to_int32());
+         break;
       case Value::Type::Document:
-      bson_append_document (impl->top(), key, -1, &tmp);
-      break;
       case Value::Type::Array:
-      bson_append_array (impl->top(), key, -1, &tmp);
-      break;
-   default:
-      break;
-   }
-}
+      {
+         const uint8_t *buf;
+         size_t len;
+         bson_t tmp;
 
-void
-BSONC::append_single ( const char * key,
-                      const char * s)
-{
-   bson_append_utf8 (impl->top(), key, -1, s, -1);
+         std::tie(buf, len) = v.to_bson();
+
+         bson_init_static (&tmp, (const bson_uint8_t *)buf, len);
+
+         if (v.get_type() == Value::Type::Document) {
+            bson_append_document (impl->top(), key, -1, &tmp);
+         } else {
+            bson_append_array (impl->top(), key, -1, &tmp);
+         }
+      }
+      default:
+         break;
+   }
 }
 
 void

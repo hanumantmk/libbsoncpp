@@ -19,7 +19,7 @@ public:
 
    void print (std::ostream & stream) const;
 
-   BSONCPP_VALUE_GUARD(BSONC::Types::Doc)
+   BSONCPP_VALUE_GUARD
 };
 
 }

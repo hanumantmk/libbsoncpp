@@ -2,13 +2,12 @@ lib_LTLIBRARIES = libbsoncpp.la
 
 REGULAR_H_FILES = \
 	$(top_srcdir)/bson/bson.hpp \
+	$(top_srcdir)/bson/bson_types.hpp \
 	$(top_srcdir)/bson/bson_stack.hpp \
 	$(top_srcdir)/bson/bson_exception.hpp \
 	$(top_srcdir)/bson/bson_document.hpp \
 	$(top_srcdir)/bson/bson_value.hpp \
 	$(top_srcdir)/bson/bson_value_impl.hpp \
-	$(top_srcdir)/bson/bson_value_impl_null.hpp \
-	$(top_srcdir)/bson/bson_value_impl_int32.hpp \
 	$(top_srcdir)/bson/bson_bsonc.hpp \
 	$(top_srcdir)/bson/bson_bsonc_impl.hpp \
 	$(top_srcdir)/bson/bson_bsonc_utils.hpp \
@@ -27,9 +26,7 @@ libbsoncpp_la_SOURCES = \
 	$(top_srcdir)/bson/bson_bsonc_doc.cpp \
 	$(top_srcdir)/bson/bson_bsonc_utils.cpp \
 	$(top_srcdir)/bson/bson_value.cpp \
-	$(top_srcdir)/bson/bson_value_impl.cpp \
-	$(top_srcdir)/bson/bson_value_impl_int32.cpp \
-	$(top_srcdir)/bson/bson_value_impl_null.cpp
+	$(top_srcdir)/bson/bson_value_impl.cpp
 
 libbsoncpp_la_CPPFLAGS = \
 	$(BSON_CFLAGS)

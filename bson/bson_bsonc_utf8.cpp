@@ -3,7 +3,7 @@
 namespace BSON {
 BSONC::Types::UTF8::UTF8 (const std::shared_ptr<BSONC::Impl> &i,
                    const char                    *v) :
-   BSONC::Type<Value::Type::UTF8> (i),
+   BSONC::Type<Value::Type::Utf8> (i),
    val (v)
 {
 }

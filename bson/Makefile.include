@@ -2,6 +2,7 @@ lib_LTLIBRARIES = libbsoncpp.la
 
 REGULAR_H_FILES = \
 	$(top_srcdir)/bson/bson.hpp \
+	$(top_srcdir)/bson/bson_stack.hpp \
 	$(top_srcdir)/bson/bson_exception.hpp \
 	$(top_srcdir)/bson/bson_document.hpp \
 	$(top_srcdir)/bson/bson_value.hpp \

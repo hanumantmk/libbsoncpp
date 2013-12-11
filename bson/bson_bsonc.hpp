@@ -2,7 +2,6 @@
 #define BSONCPP_BSONC_H
 
 #include "bson_document.hpp"
-#include <functional>
 
 extern "C" {
 #include <bson.h>
@@ -25,32 +24,15 @@ private:
       class UTF8;
    };
 
-   class Token {
-   public:
-      class Array {
-      public:
-         Array() {}
-      };
-      class Doc {
-      public:
-         Doc() {}
-      };
-      class End {
-      public:
-         End() {}
-      };
-   };
-
-   typedef std::function<void( const char * key, BSONC &b)> args_t;
-
 private:
    BSONC(const std::shared_ptr<Impl> &i);
    std::shared_ptr<Impl> impl;
 
-void push(const char * key, bool is_array);
-void pop();
-const char * nextKey();
-bool is_array();
+   void push(const char * key, bool is_array);
+   void pop(bool is_array);
+   const char * nextKey();
+   bool is_array();
+   void throwArgs(const char * key, const char * msg);
 
 public:
    BSONC();
@@ -63,43 +45,6 @@ public:
    {
       append_doc (t...);
    }
-
-   static Token::Array TArray()
-   {
-      return Token::Array();
-   }
-
-   static Token::Doc TDoc()
-   {
-      return Token::Doc();
-   }
-
-   static Token::End TEnd()
-   {
-      return Token::End();
-   }
-
-   /* this stuff is magic 
-   template <class ...T>
-   static args_t Array(const T& ...t)
-   {
-      return [&]( const char * key, BSONC &b) {
-         b.push(key, true);
-         b.append_array (t...);
-         b.pop();
-      };
-   }
-
-   template <class ...T>
-   static args_t Doc(const T& ...t)
-   {
-      return [&]( const char * key, BSONC &b) {
-         b.push(key, false);
-         b.append_doc (t...);
-         b.pop();
-      };
-   }
-   */
 
    void
    toBson (void  **buf,
@@ -116,18 +61,6 @@ public:
    void
    append_single ( const char * key,
                   const Document &b);
-
-   void
-   append_single ( const char * key,
-                  args_t args);
-
-   void
-   append_single ( const char * key,
-                   const Token::Array & t);
-
-   void
-   append_single ( const char * key,
-                   const Token::Doc & t);
 
    void
    print(std::ostream & stream) const;
@@ -148,54 +81,31 @@ public:
    }
 
    template <class ...ArgN>
-   void append_doc( const char * key, const Token::Array& a, const ArgN& ...an)
-   {
-      append_single (key, a);
-
-      append_array (an...);
-   }
-
-   template <class ...ArgN>
    void append_doc( const char * key, char a, const ArgN& ...an)
    {
-      if (a == '{') {
-         append_doc (key, Token::Doc(), an...);
-      } else if (a == '[') {
-         append_doc (key, Token::Array(), an...);
+      if (!(a == '{' || a == '[')) {
+         throwArgs(key, "document control characters restricted to [{[] for values");
       }
+
+      push(key, a == '[');
+      append(an...);
    }
 
-   void append_doc( const char * key, char a)
+   void append_doc( char a )
    {
-      if (a == '{') {
-         append_single (key, Token::Doc());
-      } else if (a == '[') {
-         append_single (key, Token::Array());
+      if (!(a == '}' || a == ']')) {
+         throwArgs("", "document control characters restricted to [}]] for keys");
       }
-   }
 
-   void append_doc( const Token::End & e)
-   {
-      pop();
+      pop(a == ']');
    }
 
    template <class ...ArgN>
-   void append_doc( const Token::End & e, const ArgN& ...an)
+   void append_doc( char c, const ArgN& ...an)
    {
-      pop();
-      if (is_array()) {
-         append_array (an...);
-      } else {
-         append_doc (an...);
-      }
-   }
+      append_doc(c);
 
-   template <class ...ArgN>
-   void append_doc( char e, const ArgN& ...an)
-   {
-      if (e == ']' || e == '}') {
-         append_doc( Token::End(), an...);
-      }
+      append(an...);
    }
 
    template <class T>
@@ -212,48 +122,23 @@ public:
    }
 
    template <class ...ArgN>
-   void append_array( const Token::Doc &d,  const ArgN& ...an)
-   {
-      append_single (nextKey(), d);
-      append_doc (an...);
-   }
-
-   template <class ...ArgN>
    void append_array( char a, const ArgN& ...an)
    {
-      if (a == '{') {
-         append_array (Token::Doc(), an...);
-      } else if (a == '[') {
-         append_array (Token::Array(), an...);
-      } else if (a == '}' || a == ']') {
-         append_array( Token::End(), an...);
-      }
+      append_array(a);
+
+      append( an...);
    }
 
    void append_array( char a)
    {
-      if (a == '{') {
-         append_single (nextKey(), Token::Doc());
-      } else if (a == '[') {
-         append_single (nextKey(), Token::Array());
-      } else if (a == '}' || a == ']') {
-         append_array ( Token::End());
+      if (!(a == '{' || a == '}' || a == '[' || a == ']')) {
+         throwArgs(nextKey(), "array control characters restricted to [{}[]]");
       }
-   }
 
-   void append_array ( const Token::End & e)
-   {
-      pop();
-   }
-
-   template <class ...ArgN>
-   void append_array ( const Token::End & e, const ArgN& ...an)
-   {
-      pop();
-      if (is_array()) {
-         append_array (an...);
+      if (a == '{' || a == '[') {
+         push(nextKey(), a == '[');
       } else {
-         append_doc (an...);
+         pop(a == ']');
       }
    }
 

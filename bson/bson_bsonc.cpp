@@ -2,6 +2,8 @@
 #include "bson_bsonc_impl.hpp"
 #include "bson_bsonc_utils.hpp"
 
+#include <sstream>
+
 namespace BSON {
 BSONC::BSONC() :
    impl (new BSONC::Impl())
@@ -25,13 +27,34 @@ void BSONC::clone(Value::Impl * storage) const
    new (storage) BSONC(impl);
 }
 
+void BSONC::throwArgs(const char * key, const char * msg)
+{
+   append_single(key, "XXX <--- Error here");
+
+   while (impl->top() != impl->bottom()) {
+      impl->pop();
+   }
+   std::stringstream ss;
+
+   ss << msg << std::endl << "Current struct: " << *this;
+
+   throw Exception(ss.str().c_str());
+}
+
 void BSONC::push(const char *key, bool is_array)
 {
    impl->push(key, is_array);
 }
 
-void BSONC::pop()
+void BSONC::pop(bool arr)
 {
+   if (impl->top() == impl->bottom()) {
+      throwArgs("", "Attempting to close the root document");
+   }
+
+   if (arr != is_array()) {
+      throwArgs("", "mismatched sub document close");
+   }
    impl->pop();
 }
 
@@ -49,7 +72,7 @@ void
 BSONC::toBson (void  **buf,
                size_t *len) const
 {
-   bson_t *bson = impl->top();
+   bson_t *bson = impl->bottom();
    *buf = (void *)bson_get_data (bson);
    *len = bson->len;
 }
@@ -87,27 +110,6 @@ BSONC::append_single ( const char * key,
 
 void
 BSONC::append_single ( const char * key,
-               const Token::Doc & t)
-{
-   impl->push(key, false);
-}
-
-void
-BSONC::append_single ( const char * key,
-               const Token::Array & t)
-{
-   impl->push(key, true);
-}
-
-void
-BSONC::append_single ( const char * key,
-               args_t args)
-{
-   args(key, *this);
-}
-
-void
-BSONC::append_single ( const char * key,
                       const char * s)
 {
    bson_append_utf8 (impl->top(), key, -1, s, -1);
@@ -118,7 +120,7 @@ BSONC::print (std::ostream & out) const
 {
    bson_iter_t iter;
 
-   bson_iter_init(&iter, impl->top());
+   bson_iter_init(&iter, impl->bottom());
 
    BSONCUtils::pp( out, &iter, 0, false);
 }
@@ -126,7 +128,7 @@ BSONC::print (std::ostream & out) const
 Value
 BSONC::operator [] (const char * s) const
 {
-   return BSONCUtils::convert(impl, impl->top(), s);
+   return BSONCUtils::convert(impl, impl->bottom(), s);
 }
 
 }

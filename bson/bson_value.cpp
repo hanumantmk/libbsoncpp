@@ -1,37 +1,42 @@
 #include "bson_value.hpp"
 #include "bson_value_impl.hpp"
+#include "bson_iterator.hpp"
 #include "bson_types.hpp"
 
 namespace BSON {
 
-Value::Value() :
-   impl(static_cast<Impl *>(static_cast<void*>(&storage)))
+Value::Value()
 {
+}
+
+auto Value::clone_storage() -> Impl *
+{
+   return static_cast<Impl *>(static_cast<void*>(&storage));
 }
 
 Value::Value(const Value& other) :
    Value()
 {
-   other.impl->clone(impl);
+   impl = other.impl->clone(clone_storage());
 }
 
 Value::Value ( const Value::Impl & i) :
    Value()
 {
-   i.clone(impl);
+   impl = i.clone(clone_storage());
 }
 
 Value::Value(const char * str) :
    Value()
 {
-   new (get_impl()) Types::Utf8(str);
+   impl = new (clone_storage()) BSON::Type (Types::Utf8(str));
 }
 
 
 Value::Value(int32_t i) :
    Value()
 {
-   new (get_impl()) Types::Int32(i);
+   impl = new (clone_storage()) BSON::Type (Types::Int32(i));
 }
 
 
@@ -45,12 +50,6 @@ const Value& Value::operator=( const Value& other)
 Value::~Value()
 {
    impl->~Impl();
-}
-
-Value::Impl *
-Value::get_impl ()
-{
-   return impl;
 }
 
 Value::Type
@@ -82,6 +81,16 @@ Value Value::operator [] (const char * s) const
 Value Value::operator [] (int i) const
 {
    return (*impl)[i];
+}
+
+auto Value::begin() const -> Iterator
+{
+   return impl->begin();
+}
+
+auto Value::end() const -> Iterator
+{
+   return impl->end();
 }
 
 void

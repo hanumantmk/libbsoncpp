@@ -10,7 +10,7 @@
 
 #define BSONCPP_VALUE_GUARD \
 protected: \
-   void magicSizeGuard() const { \
+   virtual void magicSizeGuard(Value v) const { \
       static_assert(sizeof(*this) <= Value::storage_size, "Type too large to fit in Value"); \
       static_assert(alignof(decltype(*this)) <= Value::storage_align, "Type too large to align in Value"); \
    }
@@ -26,13 +26,16 @@ public:
       }
    };
 
+   class Iterator;
+
    class Impl;
    static const size_t storage_size = 60;
    static const size_t storage_align = 8;
 
 private:
-   std::aligned_storage<storage_size>::type storage;
+   std::aligned_storage<storage_size, storage_align>::type storage;
    Impl *impl;
+   Impl *clone_storage();
 
 public:
    enum Type
@@ -70,9 +73,6 @@ public:
    Value ( const char * s);
    Value ( const Value::Impl & i);
 
-   Impl *
-   get_impl();
-
    Type get_type () const;
 
    const char * to_utf8() const;
@@ -81,6 +81,9 @@ public:
 
    Value operator [] (const char * s) const;
    Value operator [] (int i) const;
+
+   Iterator begin() const;
+   Iterator end() const;
 
    void
    print (std::ostream & stream) const;

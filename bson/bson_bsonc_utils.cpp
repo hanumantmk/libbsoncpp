@@ -1,32 +1,11 @@
 #include "bson_bsonc_utils.hpp"
-#include "bson_bsonc_utf8.hpp"
-#include "bson_bsonc_doc.hpp"
-#include "bson_bsonc_array.hpp"
+#include "bson_bsonc_type.hpp"
 #include "bson_types.hpp"
 
 namespace BSON {
 
-void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool is_array)
+void BSONCUtils::pp_type (std::ostream & stream, bson_iter_t *iter, int indent)
 {
-   if (is_array) {
-      stream << "[" << std::endl;
-   } else {
-      stream << "{" << std::endl;
-   }
-
-   indent += 2;
-
-   while (bson_iter_next(iter)) {
-      const char * key = bson_iter_key(iter);
-
-      stream.width(indent);
-      stream << "";
-      stream.width(0);
-
-      if (!is_array) {
-         stream << key << " : ";
-      }
-
       switch (bson_iter_type (iter)) {
       case BSON_TYPE_ARRAY:
       {
@@ -58,6 +37,31 @@ void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool 
          break;
       }
 
+}
+
+void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool is_array)
+{
+   if (is_array) {
+      stream << "[" << std::endl;
+   } else {
+      stream << "{" << std::endl;
+   }
+
+   indent += 2;
+
+   while (bson_iter_next(iter)) {
+      const char * key = bson_iter_key(iter);
+
+      stream.width(indent);
+      stream << "";
+      stream.width(0);
+
+      if (!is_array) {
+         stream << key << " : ";
+      }
+
+      pp_type(stream, iter, indent);
+
       stream << "," << std::endl;
    }
 
@@ -74,49 +78,25 @@ void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool 
    }
 }
 
+Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson_iter_t * iter)
+{
+   return Value(BSONC::Type(impl, iter));
+}
+
 Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson_t * bson, const char * key)
 {
-   Value r;
+   using namespace Types;
+
    bson_iter_t iter;
    bson_bool_t b;
 
    b = bson_iter_init_find (&iter, bson, key);
 
    if (!b) {
-      new (r.get_impl()) Types::Null ();
+      return Value(Type(Null()));
    } else {
-      switch (bson_iter_type (&iter)) {
-      case BSON_TYPE_ARRAY:
-      {
-         const bson_uint8_t *buf;
-         bson_uint32_t len;
-
-         bson_iter_array(&iter, &len, &buf);
-         new (r.get_impl()) BSONC::Types::Array (impl, buf, len);
-         break;
-      }
-      case BSON_TYPE_DOCUMENT:
-      {
-         const bson_uint8_t *buf;
-         bson_uint32_t len;
-
-         bson_iter_document(&iter, &len, &buf);
-         new (r.get_impl()) BSONC::Types::Doc (impl, buf, len);
-         break;
-      }
-      case BSON_TYPE_UTF8:
-         new (r.get_impl()) BSONC::Types::UTF8 (impl, bson_iter_utf8 (&iter, NULL));
-         break;
-      case BSON_TYPE_INT32:
-         new (r.get_impl()) Types::Int32 (bson_iter_int32 (&iter));
-         break;
-      default:
-         new (r.get_impl()) Types::Null ();
-         break;
-      }
+      return convert (impl, &iter);
    }
-
-   return r;
 }
 
 }

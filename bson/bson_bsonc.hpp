@@ -13,16 +13,11 @@ class BSONC : public Document {
 private:
    friend class BSONCUtils;
    class Impl;
-
-   template <Value::Type t>
    class Type;
+   class Iterator;
 
-   class Types {
-      public:
-      class Doc;
-      class Array;
-      class UTF8;
-   };
+   friend class Type;
+   friend class Iterator;
 
 private:
    BSONC(const std::shared_ptr<Impl> &i);
@@ -40,7 +35,7 @@ public:
    BSONC();
 
    Value::Type get_type () const;
-   void clone(Value::Impl * storage) const;
+   auto clone(Value::Impl * storage) const -> Value::Impl *;
 
    template <class ...T>
    BSONC(const T& ...t) : BSONC()
@@ -58,6 +53,10 @@ public:
    print(std::ostream & stream) const;
 
    Value operator [] (const char * s) const;
+
+   Value::Iterator begin() const;
+
+   Value::Iterator end() const;
 
    BSONCPP_VALUE_GUARD
 };

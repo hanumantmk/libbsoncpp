@@ -2,6 +2,8 @@ lib_LTLIBRARIES = libbsoncpp.la
 
 REGULAR_H_FILES = \
 	$(top_srcdir)/bson/bson.hpp \
+	$(top_srcdir)/bson/bson_iterator.hpp \
+	$(top_srcdir)/bson/bson_iterator_impl.hpp \
 	$(top_srcdir)/bson/bson_types.hpp \
 	$(top_srcdir)/bson/bson_stack.hpp \
 	$(top_srcdir)/bson/bson_exception.hpp \
@@ -11,20 +13,18 @@ REGULAR_H_FILES = \
 	$(top_srcdir)/bson/bson_bsonc.hpp \
 	$(top_srcdir)/bson/bson_bsonc_impl.hpp \
 	$(top_srcdir)/bson/bson_bsonc_utils.hpp \
-	$(top_srcdir)/bson/bson_bsonc_type.hpp \
-	$(top_srcdir)/bson/bson_bsonc_array.hpp \
-	$(top_srcdir)/bson/bson_bsonc_doc.hpp \
-	$(top_srcdir)/bson/bson_bsonc_utf8.hpp
+	$(top_srcdir)/bson/bson_bsonc_type.hpp
 
 libbsoncpp_la_SOURCES = \
 	$(REGULAR_H_FILES) \
+	$(top_srcdir)/bson/bson_types.cpp \
+	$(top_srcdir)/bson/bson_iterator.cpp \
+	$(top_srcdir)/bson/bson_iterator_impl.cpp \
 	$(top_srcdir)/bson/bson_bsonc.cpp \
 	$(top_srcdir)/bson/bson_bsonc_append.cpp \
 	$(top_srcdir)/bson/bson_bsonc_impl.cpp \
-	$(top_srcdir)/bson/bson_bsonc_utf8.cpp \
-	$(top_srcdir)/bson/bson_bsonc_array.cpp \
-	$(top_srcdir)/bson/bson_bsonc_doc.cpp \
 	$(top_srcdir)/bson/bson_bsonc_utils.cpp \
+	$(top_srcdir)/bson/bson_bsonc_type.cpp \
 	$(top_srcdir)/bson/bson_value.cpp \
 	$(top_srcdir)/bson/bson_value_impl.cpp
 

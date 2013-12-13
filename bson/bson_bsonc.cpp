@@ -1,5 +1,6 @@
 #include "bson_bsonc.hpp"
 #include "bson_bsonc_impl.hpp"
+#include "bson_bsonc_type.hpp"
 #include "bson_bsonc_utils.hpp"
 
 #include <sstream>
@@ -22,9 +23,9 @@ Value::Type BSONC::get_type () const
    return Value::Type::Document;
 }
 
-void BSONC::clone(Value::Impl * storage) const
+auto BSONC::clone(Value::Impl * storage) const -> Value::Impl *
 {
-   new (storage) BSONC(impl);
+   return new (storage) BSONC(impl);
 }
 
 void BSONC::throwArgs(const char * key, const char * msg)
@@ -119,6 +120,20 @@ Value
 BSONC::operator [] (const char * s) const
 {
    return BSONCUtils::convert(impl, impl->bottom(), s);
+}
+
+Value::Iterator BSONC::begin() const
+{
+   bson_iter_t iter;
+   bson_iter_init(&iter, impl->bottom());
+   bson_iter_next(&iter);
+
+   return Value::Iterator(BSONC::Type(impl, &iter));
+}
+
+Value::Iterator BSONC::end() const
+{
+   return Value::Iterator::End();
 }
 
 }

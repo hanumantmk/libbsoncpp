@@ -56,6 +56,16 @@ main (int    argc,
       cout << "not real: " << bson["not real"] << endl << "foo: " << bson["foo"] <<
         endl;
 
+      cout << bson["bson"];
+      cout << bson["bson"]["doc"];
       cout << bson["bson"]["doc"]["array"];
+
+      for (auto i = bson["bson"]["doc"]["array"].begin(); i != bson.end(); ++i) {
+         cout << i.key() << " : " << i.value() << endl;
+      }
+
+      for (auto i : bson["bson"]["doc"]["array"]) {
+         cout << i.first << " : " << i.second << endl;
+      }
    }
 }

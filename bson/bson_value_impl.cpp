@@ -1,4 +1,5 @@
 #include "bson_value_impl.hpp"
+#include "bson_iterator.hpp"
 
 namespace BSON {
 
@@ -25,6 +26,16 @@ Value Value::Impl::operator[](const char * str) const
 Value Value::Impl::operator[](int i) const
 {
    throw Value::Exception("No conversion to array available");
+}
+
+Value::Iterator Value::Impl::begin() const
+{
+   throw Value::Exception("No begin() available");
+}
+
+Value::Iterator Value::Impl::end() const
+{
+   throw Value::Exception("No end() available");
 }
 
 }

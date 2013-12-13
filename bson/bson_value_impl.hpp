@@ -7,7 +7,7 @@ namespace BSON {
 
 class Value::Impl {
 protected:
-   virtual void magicSizeGuard() const = 0;
+   virtual void magicSizeGuard(Value v) const = 0;
 
 public:
    virtual Type get_type () const = 0;
@@ -16,7 +16,7 @@ public:
    {
    };
 
-   virtual void clone(Impl * storage) const = 0;
+   virtual Impl * clone(Impl * storage) const = 0;
 
    virtual const char * to_utf8() const;
    virtual int32_t to_int32() const;
@@ -24,6 +24,9 @@ public:
 
    virtual Value operator [] (const char * s) const;
    virtual Value operator [] (int i) const;
+
+   virtual Iterator begin() const;
+   virtual Iterator end() const;
 
    virtual void
    print (std::ostream & stream) const

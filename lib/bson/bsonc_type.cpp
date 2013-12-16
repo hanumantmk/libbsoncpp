@@ -1,6 +1,7 @@
 #include "bson/bsonc_type.hpp"
 #include "bson/bsonc_utils.hpp"
 #include "bson/iterator.hpp"
+#include "bson/bsonc_impl.hpp"
 
 namespace BSON {
 

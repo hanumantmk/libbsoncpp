@@ -2,8 +2,7 @@ noinst_PROGRAMS = \
 	test-bsoncpp
 
 AM_CPPFLAGS = \
-	-I $(top_srcdir)/lib \
-	$(BSON_CFLAGS)
+	-I $(top_srcdir)/lib
 
 test_bsoncpp_SOURCES = $(top_srcdir)/tests/test-bsoncpp.cpp
 

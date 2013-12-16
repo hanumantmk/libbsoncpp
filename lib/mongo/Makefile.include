@@ -1,0 +1,13 @@
+lib_LTLIBRARIES += libmongocpp.la
+
+LIBMONGO_REGULAR_H_FILES = \
+	$(top_srcdir)/lib/mongo.hpp
+
+libmongocpp_la_SOURCES = \
+	$(LIBMONGO_REGULAR_H_FILES)
+
+libmongocpp_la_CPPFLAGS = \
+	-I$(top_srcdir)/lib
+
+libmongocpp_la_LIBADD = \
+	libbsoncpp.la

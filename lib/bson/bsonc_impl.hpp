@@ -4,6 +4,10 @@
 #include "bson/bsonc.hpp"
 #include "bson/stack.hpp"
 
+extern "C" {
+#include <bson.h>
+}
+
 namespace BSON {
 
 class BSONC::Impl {

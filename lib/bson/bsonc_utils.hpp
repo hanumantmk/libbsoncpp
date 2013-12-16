@@ -2,6 +2,7 @@
 #define BSONCPP_BSONC_UTILS_H
 
 #include "bson/bsonc.hpp"
+#include "bson/bsonc_impl.hpp"
 #include <iostream>
 
 namespace BSON {

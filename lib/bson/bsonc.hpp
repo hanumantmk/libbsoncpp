@@ -3,10 +3,6 @@
 
 #include "bson/document.hpp"
 
-extern "C" {
-#include <bson.h>
-}
-
 namespace BSON {
 
 class BSONC : public Document {

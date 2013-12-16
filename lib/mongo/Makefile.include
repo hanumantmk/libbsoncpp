@@ -1,13 +1,32 @@
 lib_LTLIBRARIES += libmongocpp.la
 
 LIBMONGO_REGULAR_H_FILES = \
-	$(top_srcdir)/lib/mongo.hpp
+	$(top_srcdir)/lib/mongo.hpp \
+	$(top_srcdir)/lib/mongo/client.hpp \
+	$(top_srcdir)/lib/mongo/client_impl.hpp \
+	$(top_srcdir)/lib/mongo/collection.hpp \
+	$(top_srcdir)/lib/mongo/collection_impl.hpp \
+	$(top_srcdir)/lib/mongo/cursor_builder_find.hpp \
+	$(top_srcdir)/lib/mongo/cursor_builder.hpp \
+	$(top_srcdir)/lib/mongo/cursor.hpp \
+	$(top_srcdir)/lib/mongo/cursor_impl.hpp \
+	$(top_srcdir)/lib/mongo/database.hpp \
+	$(top_srcdir)/lib/mongo/flags.hpp \
+	$(top_srcdir)/lib/mongo/utils.hpp
 
 libmongocpp_la_SOURCES = \
-	$(LIBMONGO_REGULAR_H_FILES)
+	$(LIBMONGO_REGULAR_H_FILES) \
+	$(top_srcdir)/lib/mongo/client.cpp \
+	$(top_srcdir)/lib/mongo/collection.cpp \
+	$(top_srcdir)/lib/mongo/cursor_builder_find.cpp \
+	$(top_srcdir)/lib/mongo/cursor.cpp \
+	$(top_srcdir)/lib/mongo/database.cpp \
+	$(top_srcdir)/lib/mongo/utils.cpp
 
 libmongocpp_la_CPPFLAGS = \
+	$(MONGOC_CFLAGS) \
 	-I$(top_srcdir)/lib
 
 libmongocpp_la_LIBADD = \
+	$(MONGOC_LIBS) \
 	libbsoncpp.la

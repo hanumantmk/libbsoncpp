@@ -29,8 +29,11 @@ class BSONC::Impl {
 
    char lastKeyBuf[30];
 
+   bool is_static;
+
 public:
    Impl();
+   Impl(const std::tuple<const uint8_t * , uint32_t> & bson);
    ~Impl();
 
    const char * nextKey ();

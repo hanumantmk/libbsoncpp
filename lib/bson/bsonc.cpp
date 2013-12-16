@@ -12,6 +12,11 @@ BSONC::BSONC() :
 
 }
 
+BSONC::BSONC(const std::tuple<const uint8_t *, uint32_t> & bson) :
+   impl (new BSONC::Impl(bson))
+{
+}
+
 BSONC::BSONC(const std::shared_ptr<BSONC::Impl> &i) :
    impl (i)
 {

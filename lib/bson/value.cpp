@@ -17,7 +17,9 @@ auto Value::clone_storage() -> Impl *
 Value::Value(const Value& other) :
    Value()
 {
-   impl = other.impl->clone(clone_storage());
+   if (other.has_value()) {
+      impl = other.impl->clone(clone_storage());
+   }
 }
 
 Value::Value ( const Value::Impl & i) :
@@ -42,20 +44,40 @@ Value::Value(int32_t i) :
 
 const Value& Value::operator=( const Value& other)
 {
-   other.impl->clone(impl);
+   if (other.has_value()) {
+      impl = other.impl->clone(clone_storage());
+   } else {
+      if (impl) {
+         impl->~Impl();
+         impl = NULL;
+      }
+   }
 
    return *this;
 }
 
 Value::~Value()
 {
-   impl->~Impl();
+   if (impl) {
+      impl->~Impl();
+   }
 }
 
 Value::Type
 Value::get_type () const
 {
    return impl->get_type ();
+}
+
+bool
+Value::has_value () const
+{
+   return impl != NULL;
+}
+
+Value::operator bool() const
+{
+   return has_value();
 }
 
 const char * Value::to_utf8() const

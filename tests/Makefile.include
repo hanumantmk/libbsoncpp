@@ -1,9 +1,14 @@
 noinst_PROGRAMS = \
-	test-bsoncpp
+	test-bsoncpp \
+	test-mongocpp
 
 AM_CPPFLAGS = \
 	-I $(top_srcdir)/lib
 
 test_bsoncpp_SOURCES = $(top_srcdir)/tests/test-bsoncpp.cpp
 
-LDADD = libbsoncpp.la
+test_mongocpp_SOURCES = $(top_srcdir)/tests/test-mongocpp.cpp
+
+LDADD = \
+   libbsoncpp.la \
+   libmongocpp.la

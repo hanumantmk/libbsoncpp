@@ -34,7 +34,7 @@ public:
 
 private:
    std::aligned_storage<storage_size, storage_align>::type storage;
-   Impl *impl;
+   Impl *impl = NULL;
    Impl *clone_storage();
 
 public:
@@ -74,6 +74,9 @@ public:
    Value ( const Value::Impl & i);
 
    Type get_type () const;
+
+   bool has_value () const;
+   explicit operator bool() const;
 
    const char * to_utf8() const;
    int32_t to_int32() const;

@@ -18,6 +18,7 @@ ltmain.sh
 missing
 stamp-h1
 test-bsoncpp
+test-mongocpp
 *.log
 *.trs
 *.o

@@ -64,6 +64,8 @@ main (int    argc,
          cout << i.key() << " : " << i.value() << endl;
       }
 
+      cout << endl << "second" << endl << endl;
+
       for (auto i : bson["bson"]["doc"]["array"]) {
          cout << i.first << " : " << i.second << endl;
       }

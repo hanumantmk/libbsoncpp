@@ -1,8 +1,8 @@
 #ifndef BSONCPP_BSONC_IMPL_H
 #define BSONCPP_BSONC_IMPL_H
 
-#include "bson_bsonc.hpp"
-#include "bson_stack.hpp"
+#include "bson/bsonc.hpp"
+#include "bson/stack.hpp"
 
 namespace BSON {
 

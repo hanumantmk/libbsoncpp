@@ -1,2 +1,2 @@
-include bson/Makefile.include
+include lib/Makefile.include
 include tests/Makefile.include

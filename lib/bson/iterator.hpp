@@ -1,7 +1,7 @@
 #ifndef BSONCPP_VALUE_ITERATOR_H
 #define BSONCPP_VALUE_ITERATOR_H
 
-#include "bson_value.hpp"
+#include "bson/value.hpp"
 
 #define BSONCPP_VALUE_ITERATOR_GUARD \
 protected: \

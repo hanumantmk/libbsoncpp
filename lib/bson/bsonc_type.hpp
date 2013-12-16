@@ -1,11 +1,11 @@
 #ifndef BSONCPP_BSONC_TYPE_H
 #define BSONCPP_BSONC_TYPE_H
 
-#include "bson_bsonc.hpp"
-#include "bson_bsonc_impl.hpp"
-#include "bson_types.hpp"
-#include "bson_value_impl.hpp"
-#include "bson_iterator_impl.hpp"
+#include "bson/bsonc.hpp"
+#include "bson/bsonc_impl.hpp"
+#include "bson/types.hpp"
+#include "bson/value_impl.hpp"
+#include "bson/iterator_impl.hpp"
 
 namespace BSON {
 

@@ -1,7 +1,7 @@
-#include "bson_bsonc.hpp"
-#include "bson_bsonc_impl.hpp"
-#include "bson_bsonc_type.hpp"
-#include "bson_bsonc_utils.hpp"
+#include "bson/bsonc.hpp"
+#include "bson/bsonc_impl.hpp"
+#include "bson/bsonc_type.hpp"
+#include "bson/bsonc_utils.hpp"
 
 #include <sstream>
 

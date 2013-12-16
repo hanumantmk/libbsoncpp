@@ -1,7 +1,7 @@
 #ifndef BSONCPP_BSONC_UTILS_H
 #define BSONCPP_BSONC_UTILS_H
 
-#include "bson_bsonc.hpp"
+#include "bson/bsonc.hpp"
 #include <iostream>
 
 namespace BSON {

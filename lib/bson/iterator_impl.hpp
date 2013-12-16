@@ -1,7 +1,7 @@
 #ifndef BSONCPP_VALUE_ITERATOR_IMPL_H
 #define BSONCPP_VALUE_ITERATOR_IMPL_H
 
-#include "bson_iterator.hpp"
+#include "bson/iterator.hpp"
 
 namespace BSON {
 

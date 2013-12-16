@@ -1,7 +1,7 @@
 #ifndef BSONCPP_VALUE_IMPL_H
 #define BSONCPP_VALUE_IMPL_H
 
-#include "bson_value.hpp"
+#include "bson/value.hpp"
 
 namespace BSON {
 

@@ -1,7 +1,7 @@
-#include "bson_value.hpp"
-#include "bson_value_impl.hpp"
-#include "bson_iterator.hpp"
-#include "bson_types.hpp"
+#include "bson/value.hpp"
+#include "bson/value_impl.hpp"
+#include "bson/iterator.hpp"
+#include "bson/types.hpp"
 
 namespace BSON {
 

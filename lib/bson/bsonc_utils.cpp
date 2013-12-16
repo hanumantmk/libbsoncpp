@@ -1,6 +1,6 @@
-#include "bson_bsonc_utils.hpp"
-#include "bson_bsonc_type.hpp"
-#include "bson_types.hpp"
+#include "bson/bsonc_utils.hpp"
+#include "bson/bsonc_type.hpp"
+#include "bson/types.hpp"
 
 namespace BSON {
 

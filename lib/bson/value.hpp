@@ -6,7 +6,7 @@
 #include <iostream>
 #include <tuple>
 
-#include "bson_exception.hpp"
+#include "bson/exception.hpp"
 
 #define BSONCPP_VALUE_GUARD \
 protected: \

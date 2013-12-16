@@ -1,5 +1,5 @@
-#include "bson_iterator.hpp"
-#include "bson_iterator_impl.hpp"
+#include "bson/iterator.hpp"
+#include "bson/iterator_impl.hpp"
 
 namespace BSON {
 

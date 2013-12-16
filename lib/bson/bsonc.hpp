@@ -1,7 +1,7 @@
 #ifndef BSONCPP_BSONC_H
 #define BSONCPP_BSONC_H
 
-#include "bson_document.hpp"
+#include "bson/document.hpp"
 
 extern "C" {
 #include <bson.h>

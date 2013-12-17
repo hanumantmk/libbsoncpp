@@ -10,18 +10,30 @@ namespace MONGO {
 Cursor::Builder::Find::Find(const std::shared_ptr<Collection::Impl> & c, const BSON::Value &query) :
    _collection(c),
    _query(query),
-   _fields()
+   _fields(),
+   _sort()
 {
 }
 
 std::unique_ptr<Cursor::Impl> Cursor::Builder::Find::to_cursor() const
 {
+   using namespace BSON;
+
+   Value buf;
+
    bson_t q;
    bson_t f;
 
-   if (_query) {
-      Utils::to_bson_t(_query, &q);
+   if (_sort) {
+      buf = BSONC(
+         "$query", _query,
+         "$orderby", _sort
+      );
+   } else {
+      buf = _query;
    }
+
+   Utils::to_bson_t(buf, &q);
 
    if (_fields) {
       Utils::to_bson_t(_fields, &f);
@@ -32,7 +44,7 @@ std::unique_ptr<Cursor::Impl> Cursor::Builder::Find::to_cursor() const
       (mongoc_query_flags_t) _flags,
       _skip,
       _limit,
-      (_query ? &q : NULL),
+      &q,
       (_fields ? &f : NULL),
       NULL
    );
@@ -64,6 +76,13 @@ auto Cursor::Builder::Find::limit(uint32_t i) -> Find &
 auto Cursor::Builder::Find::fields(const BSON::Value &fields) -> Find &
 {
    _fields = fields;
+
+   return *this;
+}
+
+auto Cursor::Builder::Find::sort(const BSON::Value &sort) -> Find &
+{
+   _sort = sort;
 
    return *this;
 }

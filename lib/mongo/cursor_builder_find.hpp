@@ -13,6 +13,7 @@ private:
    std::shared_ptr<Collection::Impl> _collection;
    BSON::Value _query;
    BSON::Value _fields;
+   BSON::Value _sort;
    uint32_t _skip = 0;
    uint32_t _limit = 0;
    Flags::Query _flags = Flags::Query::NONE;
@@ -24,6 +25,7 @@ protected:
 
 public:
    Find & flags(Flags::Query flags);
+   Find & sort(const BSON::Value &sort);
    Find & skip(uint32_t i);
    Find & limit(uint32_t i);
    Find & fields(const BSON::Value &fields);

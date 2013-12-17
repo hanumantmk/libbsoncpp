@@ -14,14 +14,9 @@ main (int    argc,
 
    Collection col = c.get_collection( "test", "test");
 
-   Cursor cursor = col.find(BSONC("hello", "world")).fields(BSONC("hello", 1, "_id", 0));
+   Cursor cursor = col.find(BSONC()).fields(BSONC("hello", 1, "_id", 0)).sort(BSONC("hello", -1));
 
-   while (true) {
-      Value v = cursor.next();
-      if (! v) {
-         break;
-      }
-
+   while ( Value v = cursor.next() ) {
       cout << v << endl;
    }
 }

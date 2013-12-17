@@ -9,13 +9,13 @@ class Database;
 class Collection;
 class WriteConcern;
 class ReadPref;
+class ClientImpl;
 
 class Client {
-public:
-   class Impl;
+friend class Collection;
+friend class Database;
 
-private:
-   std::shared_ptr<Impl> impl;
+   std::shared_ptr<ClientImpl> impl;
 
 public:
    Client(const Client &other);

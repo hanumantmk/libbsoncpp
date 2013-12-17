@@ -14,7 +14,7 @@ main (int    argc,
 
    Collection col = c.get_collection( "test", "test");
 
-   Cursor cursor = col.find(BSONC()).fields(BSONC("hello", 1, "_id", 0)).sort(BSONC("hello", -1));
+   Cursor cursor = col.find().fields("hello", 1, "_id", 0).sort("hello", -1);
 
    while ( Value v = cursor.next() ) {
       cout << v << endl;

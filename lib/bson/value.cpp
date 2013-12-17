@@ -105,6 +105,11 @@ Value Value::operator [] (int i) const
    return (*impl)[i];
 }
 
+Document & Value::to_document()
+{
+   return impl->to_document();
+}
+
 auto Value::begin() const -> Iterator
 {
    return impl->begin();

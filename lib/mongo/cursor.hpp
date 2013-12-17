@@ -6,19 +6,15 @@
 
 namespace MONGO {
 
+class CursorImpl;
+class CursorBuilder;
+
 class Cursor {
-private:
-   class Impl;
+   std::shared_ptr<CursorImpl> impl;
 
 public:
-   class Builder;
-
-private:
-   std::shared_ptr<Impl> impl;
-
-public:
-   Cursor(std::unique_ptr<Impl> && impl);
-   Cursor(const Builder &b);
+   Cursor(std::unique_ptr<CursorImpl> && impl);
+   Cursor(const CursorBuilder &b);
 
    BSON::Value next();
    bool more() const;

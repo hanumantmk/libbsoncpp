@@ -51,6 +51,8 @@ public:
 
    Value operator [] (const char * s) const;
 
+   Document & to_document();
+
    Value::Iterator begin() const;
 
    Value::Iterator end() const;

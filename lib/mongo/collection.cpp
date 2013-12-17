@@ -3,14 +3,9 @@
 
 namespace MONGO {
 
-Collection::Collection(const std::shared_ptr<Client::Impl> & c, const char * db, const char * name) :
-   impl(new Collection::Impl(c, db, name))
+Collection::Collection(const std::shared_ptr<ClientImpl> & c, const char * db, const char * name) :
+   impl(new CollectionImpl(c, db, name))
 {
-}
-
-Cursor::Builder::Find Collection::find(const BSON::Value & query) const
-{
-   return Cursor::Builder::Find(impl, query);
 }
 
 }

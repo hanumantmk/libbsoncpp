@@ -7,33 +7,21 @@
 
 namespace MONGO {
 
-Cursor::Builder::Find::Find(const std::shared_ptr<Collection::Impl> & c, const BSON::Value &query) :
+CursorBuilderFind::CursorBuilderFind(const std::shared_ptr<CollectionImpl> & c, const BSON::Value &query) :
    _collection(c),
    _query(query),
-   _fields(),
-   _sort()
+   _fields()
 {
 }
 
-std::unique_ptr<Cursor::Impl> Cursor::Builder::Find::to_cursor() const
+std::unique_ptr<CursorImpl> CursorBuilderFind::to_cursor() const
 {
    using namespace BSON;
-
-   Value buf;
 
    bson_t q;
    bson_t f;
 
-   if (_sort) {
-      buf = BSONC(
-         "$query", _query,
-         "$orderby", _sort
-      );
-   } else {
-      buf = _query;
-   }
-
-   Utils::to_bson_t(buf, &q);
+   Utils::to_bson_t(_query, &q);
 
    if (_fields) {
       Utils::to_bson_t(_fields, &f);
@@ -49,49 +37,34 @@ std::unique_ptr<Cursor::Impl> Cursor::Builder::Find::to_cursor() const
       NULL
    );
 
-   return std::unique_ptr<Cursor::Impl>(new Cursor::Impl(_collection->client, cursor));
+   return std::unique_ptr<CursorImpl>(new CursorImpl(_collection->client, cursor));
 }
 
-auto Cursor::Builder::Find::flags(Flags::Query flags) -> Find &
+auto CursorBuilderFind::flags(Flags::Query flags) -> CursorBuilderFind &
 {
    _flags = flags;
 
    return *this;
 }
 
-auto Cursor::Builder::Find::skip(uint32_t i) -> Find &
+auto CursorBuilderFind::skip(uint32_t i) -> CursorBuilderFind &
 {
    _skip = i;
 
    return *this;
 }
 
-auto Cursor::Builder::Find::limit(uint32_t i) -> Find &
+auto CursorBuilderFind::limit(uint32_t i) -> CursorBuilderFind &
 {
    _limit = i;
 
    return *this;
 }
 
-auto Cursor::Builder::Find::fields(const BSON::Value &fields) -> Find &
-{
-   _fields = fields;
-
-   return *this;
-}
-
-auto Cursor::Builder::Find::sort(const BSON::Value &sort) -> Find &
-{
-   _sort = sort;
-
-   return *this;
-}
-
-auto Cursor::Builder::Find::read_pref(const ReadPref &rp) -> Find &
+auto CursorBuilderFind::read_pref(const ReadPref &rp) -> CursorBuilderFind &
 {
 
    return *this;
 }
-
 
 }

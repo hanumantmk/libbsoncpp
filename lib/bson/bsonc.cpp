@@ -23,6 +23,11 @@ BSONC::BSONC(const std::shared_ptr<BSONC::Impl> &i) :
 }
 
 
+Document & BSONC::to_document ()
+{
+   return *this;
+}
+
 Value::Type BSONC::get_type () const
 {
    return Value::Type::Document;

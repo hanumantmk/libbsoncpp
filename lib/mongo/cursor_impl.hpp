@@ -7,13 +7,13 @@
 
 namespace MONGO {
 
-class Cursor::Impl {
+class CursorImpl {
 private:
-   std::shared_ptr<Client::Impl> client;
+   std::shared_ptr<ClientImpl> client;
    std::unique_ptr<mongoc_cursor_t, void(*)(mongoc_cursor_t *)> cursor;
 
 public:
-   Impl(const std::shared_ptr<Client::Impl> & c, mongoc_cursor_t *cursor) :
+   CursorImpl(const std::shared_ptr<ClientImpl> & c, mongoc_cursor_t *cursor) :
       client(c),
       cursor(cursor, &mongoc_cursor_destroy)
    {

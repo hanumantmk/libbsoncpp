@@ -4,12 +4,12 @@
 
 namespace MONGO {
 
-Cursor::Cursor(std::unique_ptr<Impl> && impl) :
+Cursor::Cursor(std::unique_ptr<CursorImpl> && impl) :
    impl(std::move(impl))
 {
 }
 
-Cursor::Cursor(const Builder &b) :
+Cursor::Cursor(const CursorBuilder &b) :
    impl(std::move(b.to_cursor()))
 {
 }

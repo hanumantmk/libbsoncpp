@@ -12,7 +12,7 @@ Client::Client(const Client & other) :
 }
 
 Client::Client(const char * uri_string) :
-   impl(new Client::Impl(uri_string))
+   impl(new ClientImpl(uri_string))
 {
 }
 

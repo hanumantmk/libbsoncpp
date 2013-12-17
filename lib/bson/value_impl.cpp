@@ -28,6 +28,11 @@ Value Value::Impl::operator[](int i) const
    throw Value::Exception("No conversion to array available");
 }
 
+Document & Value::Impl::to_document()
+{
+   throw Value::Exception("No conversion to document available");
+}
+
 Value::Iterator Value::Impl::begin() const
 {
    throw Value::Exception("No begin() available");

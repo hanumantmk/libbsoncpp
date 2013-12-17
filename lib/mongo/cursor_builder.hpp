@@ -9,17 +9,17 @@
 
 namespace MONGO {
 
-class Cursor::Builder {
+class CursorBuilder {
    friend class Cursor;
 
 public:
    class Find;
 
 protected:
-   virtual std::unique_ptr<Cursor::Impl> to_cursor() const = 0;
+   virtual std::unique_ptr<CursorImpl> to_cursor() const = 0;
 
 public:
-   virtual ~Builder() {}
+   virtual ~CursorBuilder() {}
 };
 
 }

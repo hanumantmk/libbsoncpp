@@ -6,12 +6,12 @@
 
 namespace MONGO {
 
-class Collection::Impl {
+class CollectionImpl {
 public:
-   std::shared_ptr<Client::Impl> client;
+   std::shared_ptr<ClientImpl> client;
    std::unique_ptr<mongoc_collection_t, void(*)(mongoc_collection_t *)> collection;
 
-   Impl(const std::shared_ptr<Client::Impl> & c, const char * db, const char * name) :
+   CollectionImpl(const std::shared_ptr<ClientImpl> & c, const char * db, const char * name) :
       client(c),
       collection(mongoc_client_get_collection(client->get(), db, name), &mongoc_collection_destroy)
    {

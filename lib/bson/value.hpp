@@ -17,6 +17,8 @@ protected: \
 
 namespace BSON {
 
+class Document;
+
 class Value {
 public:
    class Exception : BSON::Exception {
@@ -84,6 +86,8 @@ public:
 
    Value operator [] (const char * s) const;
    Value operator [] (int i) const;
+
+   BSON::Document & to_document();
 
    Iterator begin() const;
    Iterator end() const;

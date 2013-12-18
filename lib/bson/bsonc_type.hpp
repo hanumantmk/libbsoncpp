@@ -13,17 +13,20 @@ class BSONC::Type :
    public Value::Impl,
    public Value::Iterator::Impl
 {
-   std::shared_ptr<BSONC::Impl> impl;
+   const bson_t * impl;
 
    size_t bson_offset;
    size_t bson_len;
 
    size_t iter_offset;
+
+   bool is_root;
 private:
    bool init_iter(bson_t *bson, bson_iter_t *iter) const;
 
 public:
-   Type (const std::shared_ptr<BSONC::Impl> &b, const bson_iter_t * iter);
+   Type (const bson_t * b);
+   Type (const bson_t * b, const bson_iter_t * iter);
 
    Value::Type get_type() const;
 

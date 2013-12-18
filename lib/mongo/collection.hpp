@@ -22,9 +22,7 @@ public:
    template <class ...T>
    CursorBuilderFind find(const T& ...t) const
    {
-      auto i = sizeof...(T);
-
-      if (i) {
+      if (sizeof...(T)) {
          return CursorBuilderFind(impl, BSON::BSONC("$query", '{', t..., '}'));
       } else {
          return CursorBuilderFind(impl, BSON::BSONC("$query", '{', '}'));

@@ -6,10 +6,12 @@
 namespace BSON {
 
 class BSONC : public Document {
+public:
+   class Type;
+
 private:
    friend class BSONCUtils;
    class Impl;
-   class Type;
    class Iterator;
 
    friend class Type;
@@ -29,7 +31,6 @@ protected:
 
 public:
    BSONC();
-   BSONC(const std::tuple<const uint8_t *, uint32_t> & bson);
 
    Value::Type get_type () const;
    auto clone(Value::Impl * storage) const -> Value::Impl *;

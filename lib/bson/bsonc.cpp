@@ -12,11 +12,6 @@ BSONC::BSONC() :
 
 }
 
-BSONC::BSONC(const std::tuple<const uint8_t *, uint32_t> & bson) :
-   impl (new BSONC::Impl(bson))
-{
-}
-
 BSONC::BSONC(const std::shared_ptr<BSONC::Impl> &i) :
    impl (i)
 {
@@ -129,7 +124,7 @@ BSONC::print (std::ostream & out) const
 Value
 BSONC::operator [] (const char * s) const
 {
-   return BSONCUtils::convert(impl, impl->bottom(), s);
+   return BSONCUtils::convert(impl->bottom(), impl->bottom(), s);
 }
 
 Value::Iterator BSONC::begin() const
@@ -138,7 +133,7 @@ Value::Iterator BSONC::begin() const
    bson_iter_init(&iter, impl->bottom());
    bson_iter_next(&iter);
 
-   return Value::Iterator(BSONC::Type(impl, &iter));
+   return Value::Iterator(BSONC::Type(impl->bottom(), &iter));
 }
 
 Value::Iterator BSONC::end() const

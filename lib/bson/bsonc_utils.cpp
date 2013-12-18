@@ -78,12 +78,12 @@ void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool 
    }
 }
 
-Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson_iter_t * iter)
+Value BSONCUtils::convert (const bson_t * root, const bson_iter_t * iter)
 {
-   return Value(BSONC::Type(impl, iter));
+   return Value(BSONC::Type(root, iter));
 }
 
-Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson_t * bson, const char * key)
+Value BSONCUtils::convert (const bson_t *root, const bson_t * bson, const char * key)
 {
    using namespace Types;
 
@@ -95,7 +95,7 @@ Value BSONCUtils::convert (const std::shared_ptr<BSONC::Impl> & impl, const bson
    if (!b) {
       return Value(Type(Null()));
    } else {
-      return convert (impl, &iter);
+      return convert (root, &iter);
    }
 }
 

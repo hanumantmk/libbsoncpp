@@ -2,6 +2,7 @@
 #define MONGOCPP_CURSOR_IMPL_H
 
 #include "mongo/cursor.hpp"
+#include "bson/bsonc_type.hpp"
 #include <mongoc.h>
 #include <tuple>
 
@@ -11,6 +12,7 @@ class CursorImpl {
 private:
    std::shared_ptr<ClientImpl> client;
    std::unique_ptr<mongoc_cursor_t, void(*)(mongoc_cursor_t *)> cursor;
+   const bson_t * bson;
 
 public:
    CursorImpl(const std::shared_ptr<ClientImpl> & c, mongoc_cursor_t *cursor) :
@@ -21,13 +23,8 @@ public:
 
    BSON::Value next()
    {
-      const bson_t *bson;
       if (mongoc_cursor_next(cursor.get(), &bson)) {
-         /* TODO:
-          * this is a wee bit dangerous.  Figure out how to track the memory
-          * better */
-
-         return BSON::BSONC(std::make_tuple(bson_get_data(bson), bson->len));
+         return BSON::BSONC::Type(bson);
       } else {
          bson_error_t error;
 

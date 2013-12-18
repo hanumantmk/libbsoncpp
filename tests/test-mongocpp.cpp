@@ -17,6 +17,6 @@ main (int    argc,
    Cursor cursor = col.find().fields("hello", 1, "_id", 0).sort("hello", -1);
 
    while ( Value v = cursor.next() ) {
-      cout << v << endl;
+      cout << v["hello"] << endl;
    }
 }

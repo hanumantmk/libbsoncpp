@@ -25,6 +25,7 @@ libmongocpp_la_SOURCES = \
 
 libmongocpp_la_CPPFLAGS = \
 	$(MONGOC_CFLAGS) \
+	$(BSON_CFLAGS) \
 	-I$(top_srcdir)/lib
 
 libmongocpp_la_LIBADD = \

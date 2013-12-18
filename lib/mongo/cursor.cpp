@@ -1,6 +1,6 @@
 #include "mongo/cursor.hpp"
 #include "mongo/cursor_impl.hpp"
-#include "mongo/cursor_builder.hpp"
+#include "mongo/collection_view.hpp"
 
 namespace MONGO {
 
@@ -9,10 +9,12 @@ Cursor::Cursor(std::unique_ptr<CursorImpl> && impl) :
 {
 }
 
-Cursor::Cursor(const CursorBuilder &b) :
-   impl(std::move(b.to_cursor()))
+Cursor::Cursor(Cursor && c) :
+   impl(std::move(c.impl))
 {
 }
+
+Cursor::~Cursor() = default;
 
 BSON::Value Cursor::next()
 {

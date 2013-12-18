@@ -3,13 +3,13 @@
 
 #include <bson.hpp>
 
-#include "cursor_builder_find.hpp"
+#include "collection_view.hpp"
 
 namespace MONGO {
 
 class CollectionImpl;
 class ClientImpl;
-class CursorBuilderFind;
+class CollectionView;
 
 class Collection {
 friend class Client;
@@ -20,12 +20,12 @@ private:
 
 public:
    template <class ...T>
-   CursorBuilderFind find(const T& ...t) const
+   CollectionView find(const T& ...t) const
    {
       if (sizeof...(T)) {
-         return CursorBuilderFind(impl, BSON::BSONC("$query", '{', t..., '}'));
+         return CollectionView(impl, BSON::BSONC("$query", '{', t..., '}'));
       } else {
-         return CursorBuilderFind(impl, BSON::BSONC("$query", '{', '}'));
+         return CollectionView(impl, BSON::BSONC("$query", '{', '}'));
       }
    }
 };

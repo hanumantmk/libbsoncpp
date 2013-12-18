@@ -1,5 +1,4 @@
 #include "mongo/collection_impl.hpp"
-#include "mongo/cursor_builder_find.hpp"
 
 namespace MONGO {
 

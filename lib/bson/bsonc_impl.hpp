@@ -13,7 +13,7 @@ class BSONCImpl {
    class AppendLayer {
    public:
       bson_t bson;
-      bson_t *parent = NULL;
+      bson_t *parent = nullptr;
       int lastKey = 0;
       bool is_array;
 

@@ -31,8 +31,8 @@ std::unique_ptr<CursorImpl> CursorBuilderFind::to_cursor() const
       _skip,
       _limit,
       &q,
-      (_fields ? &f : NULL),
-      NULL
+      (_fields ? &f : nullptr),
+      nullptr
    );
 
    return std::unique_ptr<CursorImpl>(new CursorImpl(_collection->client, cursor));

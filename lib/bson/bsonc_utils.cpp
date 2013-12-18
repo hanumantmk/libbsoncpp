@@ -27,7 +27,7 @@ void BSONCUtils::pp_type (std::ostream & stream, bson_iter_t *iter, int indent)
          break;
       }
       case BSON_TYPE_UTF8:
-         stream << bson_iter_utf8 (iter, NULL);
+         stream << bson_iter_utf8 (iter, nullptr);
          break;
       case BSON_TYPE_INT32:
          stream << bson_iter_int32 (iter);

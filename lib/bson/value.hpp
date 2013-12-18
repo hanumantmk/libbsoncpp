@@ -60,7 +60,7 @@ public:
 
 private:
    std::aligned_storage<storage_size, storage_align>::type storage;
-   ValueImpl *impl = NULL;
+   ValueImpl *impl = nullptr;
    ValueImpl *clone_storage();
 
 public:

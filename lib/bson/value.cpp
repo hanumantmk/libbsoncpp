@@ -49,7 +49,7 @@ const Value& Value::operator=( const Value& other)
    } else {
       if (impl) {
          impl->~ValueImpl();
-         impl = NULL;
+         impl = nullptr;
       }
    }
 
@@ -72,7 +72,7 @@ Value::get_type () const
 bool
 Value::has_value () const
 {
-   return impl != NULL;
+   return impl != nullptr;
 }
 
 Value::operator bool() const

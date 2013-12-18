@@ -83,7 +83,7 @@ const char * BSONCType::to_utf8() const {
 
    init_iter(&bson, &iter);
 
-   return bson_iter_utf8(&iter, NULL);
+   return bson_iter_utf8(&iter, nullptr);
 }
 
 int32_t BSONCType::to_int32() const {

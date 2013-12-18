@@ -17,8 +17,7 @@ class BSONCImpl {
       int lastKey = 0;
       bool is_array;
 
-      AppendLayer();
-      AppendLayer(bson_t * parent, const char * key, bool is_array);
+      AppendLayer(bson_t * parent, const std::string & key, bool is_array);
       ~AppendLayer();
    };
 
@@ -43,7 +42,7 @@ public:
    bson_t *bottom();
    bson_t *top();
    bool is_array();
-   bson_t *push(const char * key, bool is_array);
+   bson_t *push(const std::string & key, bool is_array);
    void pop();
 };
 

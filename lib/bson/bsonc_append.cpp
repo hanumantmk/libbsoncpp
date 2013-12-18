@@ -2,18 +2,14 @@
 
 namespace BSON {
 
-BSONCImpl::AppendLayer::AppendLayer()
-{
-}
-
-BSONCImpl::AppendLayer::AppendLayer(bson_t *parent, const char * key, bool is_array) :
+BSONCImpl::AppendLayer::AppendLayer(bson_t *parent, const std::string & key, bool is_array) :
    parent(parent),
    is_array(is_array)
 {
    if (is_array) {
-      bson_append_array_begin(parent, key, -1, &bson);
+      bson_append_array_begin(parent, key.c_str(), key.length(), &bson);
    } else {
-      bson_append_document_begin(parent, key, -1, &bson);
+      bson_append_document_begin(parent, key.c_str(), key.length(), &bson);
    }
 }
 

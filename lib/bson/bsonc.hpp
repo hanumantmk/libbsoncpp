@@ -22,12 +22,12 @@ private:
    std::shared_ptr<BSONCImpl> impl;
 
 protected:
-   void push(const char * key, bool is_array);
+   void push(const std::string & key, bool is_array);
    void pop();
    bool in_progress();
    const char * nextKey();
    bool is_array();
-   void throwArgs(const char * key, const char * msg);
+   void throwArgs(const std::string & key, const char * msg);
 
 public:
    BSONC();
@@ -44,7 +44,7 @@ public:
    std::tuple<const uint8_t *, size_t> to_bson() const;
 
    void
-   append_single ( const char * key,
+   append_single ( const std::string & key,
                   const Value &v);
 
    void

@@ -24,31 +24,31 @@ private:
    }
 
 protected:
-   virtual void push(const char * key, bool is_array) = 0;
+   virtual void push(const std::string & key, bool is_array) = 0;
    virtual void pop() = 0;
    virtual bool in_progress() = 0;
    virtual const char * nextKey() = 0;
    virtual bool is_array() = 0;
-   virtual void throwArgs(const char * key, const char * msg) = 0;
+   virtual void throwArgs(const std::string & key, const char * msg) = 0;
 public:
    virtual std::tuple<const uint8_t *, size_t> to_bson() const = 0;
-   virtual void append_single ( const char * key, const Value &v) = 0;
+   virtual void append_single ( const std::string & key, const Value &v) = 0;
 
    template <class T>
-   void append_doc ( const char * key, const T& t)
+   void append_doc ( const std::string & key, const T& t)
    {
       append_single (key, t);
    }
 
    template <class Arg1, class ...ArgN>
-   void append_doc( const char * key, const Arg1& a1, const ArgN& ...an)
+   void append_doc( const std::string & key, const Arg1& a1, const ArgN& ...an)
    {
       append_single (key, a1);
       append_doc (an...);
    }
 
    template <class ...ArgN>
-   void append_doc( const char * key, char a, const ArgN& ...an)
+   void append_doc( const std::string & key, char a, const ArgN& ...an)
    {
       if (!(a == '{' || a == '[')) {
          throwArgs(key, "document control characters restricted to [{[] for values");

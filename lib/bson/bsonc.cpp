@@ -33,7 +33,7 @@ auto BSONC::clone(ValueImpl * storage) const -> ValueImpl *
    return new (storage) BSONC(impl);
 }
 
-void BSONC::throwArgs(const char * key, const char * msg)
+void BSONC::throwArgs(const std::string & key, const char * msg)
 {
    append_single(key, "XXX <--- Error here");
 
@@ -47,7 +47,7 @@ void BSONC::throwArgs(const char * key, const char * msg)
    throw Exception(ss.str().c_str());
 }
 
-void BSONC::push(const char *key, bool is_array)
+void BSONC::push(const std::string & key, bool is_array)
 {
    impl->push(key, is_array);
 }
@@ -79,15 +79,15 @@ std::tuple<const uint8_t *, size_t> BSONC::to_bson() const
 }
 
 void
-BSONC::append_single ( const char * key,
+BSONC::append_single ( const std::string & key,
                       const Value&    v)
 {
    switch (v.get_type()) {
       case ValueType::Utf8:
-         bson_append_utf8(impl->top(), key, -1, v.to_utf8(), -1);
+         bson_append_utf8(impl->top(), key.c_str(), key.length(), v.to_utf8(), -1);
          break;
       case ValueType::Int32:
-         bson_append_int32(impl->top(), key, -1, v.to_int32());
+         bson_append_int32(impl->top(), key.c_str(), key.length(), v.to_int32());
          break;
       case ValueType::Document:
       case ValueType::Array:
@@ -101,9 +101,9 @@ BSONC::append_single ( const char * key,
          bson_init_static (&tmp, (const bson_uint8_t *)buf, len);
 
          if (v.get_type() == ValueType::Document) {
-            bson_append_document (impl->top(), key, -1, &tmp);
+            bson_append_document (impl->top(), key.c_str(), key.length(), &tmp);
          } else {
-            bson_append_array (impl->top(), key, -1, &tmp);
+            bson_append_array (impl->top(), key.c_str(), key.length(), &tmp);
          }
       }
       default:

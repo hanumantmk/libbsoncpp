@@ -46,7 +46,7 @@ bson_t * BSONCImpl::top()
    }
 }
 
-bson_t * BSONCImpl::push(const char * key, bool is_array)
+bson_t * BSONCImpl::push(const std::string & key, bool is_array)
 {
    storage.emplace(top(), key, is_array);
 

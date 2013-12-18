@@ -17,11 +17,12 @@ main (int    argc,
       num = 1;
    }
 
+   BSONC bson;
    for (int i = 0; i < num; i++) {
-      BSONC bson;
+      bson.clear();
       bson.append(
-         "foo", "bar",
-         "bson", BSONC(
+         "foo", i,
+         "bson", '{',
             "a", 1,
             "b", 2,
             "c", 3,
@@ -31,8 +32,8 @@ main (int    argc,
                "array", '[', '[', '[', "hi", ']', ']', 10, 11, 12, ']',
                "e", 2,
                "f", 3,
-            '}'
-         ),
+            '}',
+         '}',
          "baz", "bop",
          "array", '[', 10, 11, 12, ']'
       ).append(
@@ -49,6 +50,8 @@ main (int    argc,
          ']',
          "lol", 10
       );
+
+      continue;
 
       cout << bson << endl;
 

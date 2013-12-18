@@ -3,16 +3,27 @@
 namespace BSON {
 
 BSONCImpl::BSONCImpl() :
-   is_static(false)
+   buf_ptr((uint8_t *)malloc(256)),
+   buf_len(256),
+   writer(bson_writer_new(&buf_ptr, &buf_len, 0, &realloc))
 {
-   bson_init(&root);
+   bson_writer_begin(writer, &root);
 }
 
 BSONCImpl::~BSONCImpl()
 {
-   if (! is_static) {
-      bson_destroy(&root);
+   bson_writer_destroy(writer);
+   free(buf_ptr);
+}
+
+void BSONCImpl::clear()
+{
+   while (! storage.empty()) {
+      storage.pop();
    }
+
+   bson_writer_rollback(writer);
+   bson_writer_begin(writer, &root);
 }
 
 const char * BSONCImpl::nextKey ()
@@ -23,13 +34,13 @@ const char * BSONCImpl::nextKey ()
 
 bson_t * BSONCImpl::bottom()
 {
-   return &root;
+   return root;
 }
 
 bson_t * BSONCImpl::top()
 {
    if (storage.empty()) {
-      return &root;
+      return root;
    } else {
       return &storage.top().bson;
    }

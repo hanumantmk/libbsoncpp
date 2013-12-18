@@ -24,15 +24,20 @@ class BSONCImpl {
 
    Stack<AppendLayer, 4> storage;
 
-   bson_t root;
+   uint8_t *buf_ptr;
+   size_t buf_len;
+
+   bson_writer_t * writer;
+
+   bson_t * root;
 
    char lastKeyBuf[30];
-
-   bool is_static;
 
 public:
    BSONCImpl();
    ~BSONCImpl();
+
+   void clear();
 
    const char * nextKey ();
    bson_t *bottom();

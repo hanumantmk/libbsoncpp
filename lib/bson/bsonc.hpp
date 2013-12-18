@@ -58,6 +58,8 @@ public:
 
    ValueIterator end() const;
 
+   void clear();
+
    BSONCPP_VALUE_GUARD
 };
 

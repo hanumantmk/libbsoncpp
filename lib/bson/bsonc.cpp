@@ -141,4 +141,9 @@ ValueIterator BSONC::end() const
    return ValueIteratorEnd();
 }
 
+void BSONC::clear()
+{
+   impl->clear();
+}
+
 }

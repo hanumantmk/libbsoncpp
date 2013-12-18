@@ -18,10 +18,14 @@ main (int    argc,
    }
 
    BSONC bson;
+//   char buf[] = "hello";
+//   const char * foo = buf;
+
    for (int i = 0; i < num; i++) {
       bson.clear();
       bson.append(
          "foo", i,
+         Key("hello"), 10,
          "bson", '{',
             "a", 1,
             "b", 2,

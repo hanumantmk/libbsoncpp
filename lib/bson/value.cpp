@@ -34,6 +34,12 @@ Value::Value(const char * str) :
    impl = new (clone_storage()) BSON::Type (Types::Utf8(str));
 }
 
+Value::Value(const Key & key) :
+   Value()
+{
+   impl = new (clone_storage()) BSON::Type (Types::Utf8(key.c_str()));
+}
+
 
 Value::Value(int32_t i) :
    Value()

@@ -5,7 +5,8 @@ namespace BSON {
 BSONCImpl::BSONCImpl() :
    buf_ptr((uint8_t *)malloc(256)),
    buf_len(256),
-   writer(bson_writer_new(&buf_ptr, &buf_len, 0, &realloc))
+   writer(bson_writer_new(&buf_ptr, &buf_len, 0, &realloc)),
+   key("0", 1)
 {
    bson_writer_begin(writer, &root);
 }
@@ -26,10 +27,14 @@ void BSONCImpl::clear()
    bson_writer_begin(writer, &root);
 }
 
-const char * BSONCImpl::nextKey ()
+const Key & BSONCImpl::nextKey ()
 {
-   sprintf(lastKeyBuf, "%d", storage.top().lastKey++);
-   return (lastKeyBuf);
+   int i;
+   
+   i = sprintf(lastKeyBuf, "%d", storage.top().lastKey++);
+   key = Key(lastKeyBuf, i);
+
+   return key;
 }
 
 bson_t * BSONCImpl::bottom()
@@ -46,7 +51,7 @@ bson_t * BSONCImpl::top()
    }
 }
 
-bson_t * BSONCImpl::push(const std::string & key, bool is_array)
+bson_t * BSONCImpl::push(const Key & key, bool is_array)
 {
    storage.emplace(top(), key, is_array);
 

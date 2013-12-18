@@ -2,7 +2,7 @@
 
 namespace BSON {
 
-BSONCImpl::AppendLayer::AppendLayer(bson_t *parent, const std::string & key, bool is_array) :
+BSONCImpl::AppendLayer::AppendLayer(bson_t *parent, const Key & key, bool is_array) :
    parent(parent),
    is_array(is_array)
 {

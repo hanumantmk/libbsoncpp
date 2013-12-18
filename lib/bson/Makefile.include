@@ -2,6 +2,7 @@ lib_LTLIBRARIES += libbsoncpp.la
 
 LIBBSON_REGULAR_H_FILES = \
 	$(top_srcdir)/lib/bson.hpp \
+	$(top_srcdir)/lib/bson/key.hpp \
 	$(top_srcdir)/lib/bson/iterator.hpp \
 	$(top_srcdir)/lib/bson/iterator_impl.hpp \
 	$(top_srcdir)/lib/bson/types.hpp \

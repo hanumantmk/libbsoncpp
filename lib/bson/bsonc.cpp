@@ -33,7 +33,7 @@ auto BSONC::clone(ValueImpl * storage) const -> ValueImpl *
    return new (storage) BSONC(impl);
 }
 
-void BSONC::throwArgs(const std::string & key, const char * msg)
+void BSONC::throwArgs(const Key & key, const char * msg)
 {
    append_single(key, "XXX <--- Error here");
 
@@ -47,7 +47,7 @@ void BSONC::throwArgs(const std::string & key, const char * msg)
    throw Exception(ss.str().c_str());
 }
 
-void BSONC::push(const std::string & key, bool is_array)
+void BSONC::push(const Key & key, bool is_array)
 {
    impl->push(key, is_array);
 }
@@ -62,7 +62,7 @@ void BSONC::pop()
    impl->pop();
 }
 
-const char * BSONC::nextKey()
+const Key & BSONC::nextKey()
 {
    return impl->nextKey();
 }
@@ -79,7 +79,7 @@ std::tuple<const uint8_t *, size_t> BSONC::to_bson() const
 }
 
 void
-BSONC::append_single ( const std::string & key,
+BSONC::append_single ( const Key & key,
                       const Value&    v)
 {
    switch (v.get_type()) {

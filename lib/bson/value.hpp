@@ -7,6 +7,7 @@
 #include <tuple>
 
 #include "bson/exception.hpp"
+#include "bson/key.hpp"
 
 #define BSONCPP_VALUE_GUARD \
 protected: \
@@ -72,6 +73,7 @@ public:
 
    Value ( int32_t i);
    Value ( const char * s);
+   Value ( const Key & key);
    Value ( const ValueImpl & i);
 
    ValueType get_type () const;

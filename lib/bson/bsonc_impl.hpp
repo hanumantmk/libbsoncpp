@@ -2,6 +2,7 @@
 #define BSONCPP_BSONC_IMPL_H
 
 #include "bson/stack.hpp"
+#include "bson/key.hpp"
 
 extern "C" {
 #include <bson.h>
@@ -17,7 +18,7 @@ class BSONCImpl {
       int lastKey = 0;
       bool is_array;
 
-      AppendLayer(bson_t * parent, const std::string & key, bool is_array);
+      AppendLayer(bson_t * parent, const Key & key, bool is_array);
       ~AppendLayer();
    };
 
@@ -31,6 +32,7 @@ class BSONCImpl {
    bson_t * root;
 
    char lastKeyBuf[30];
+   Key key;
 
 public:
    BSONCImpl();
@@ -38,11 +40,11 @@ public:
 
    void clear();
 
-   const char * nextKey ();
+   const Key & nextKey ();
    bson_t *bottom();
    bson_t *top();
    bool is_array();
-   bson_t *push(const std::string & key, bool is_array);
+   bson_t *push(const Key & key, bool is_array);
    void pop();
 };
 

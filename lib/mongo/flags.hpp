@@ -4,7 +4,7 @@
 namespace MONGO {
 namespace Flags {
 
-enum Query {
+enum class Query {
    NONE              = 0,
    TAILABLE_CURSOR   = 1 << 1,
    SLAVE_OK          = 1 << 2,

@@ -5,18 +5,18 @@
 
 namespace BSON {
 
-class Value::Iterator::Impl {
+class ValueIteratorImpl {
 protected:
-   virtual void magicSizeGuard(Value::Iterator v) const = 0;
+   virtual void magicSizeGuard(ValueIterator v) const = 0;
 
 public:
-   virtual ~Impl() {}
+   virtual ~ValueIteratorImpl() {}
 
-   virtual Impl * clone(Impl * storage) const = 0;
+   virtual ValueIteratorImpl * clone(ValueIteratorImpl * storage) const = 0;
 
    virtual void next() = 0;
 
-   virtual bool is_equal(const Impl &other) const = 0;
+   virtual bool is_equal(const ValueIteratorImpl &other) const = 0;
    virtual bool is_end() const = 0;
 
    virtual Value to_value() const = 0;
@@ -25,15 +25,15 @@ public:
    virtual void print (std::ostream & stream) const {};
 };
 
-class Value::Iterator::End : public Value::Iterator::Impl {
+class ValueIteratorEnd : public ValueIteratorImpl {
 public:
-   End();
+   ValueIteratorEnd();
 
-   Impl * clone(Impl * storage) const;
+   ValueIteratorImpl * clone(ValueIteratorImpl * storage) const;
 
    void next();
 
-   bool is_equal(const Impl &other) const;
+   bool is_equal(const ValueIteratorImpl &other) const;
    bool is_end() const;
 
    Value to_value() const;

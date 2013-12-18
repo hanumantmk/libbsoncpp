@@ -24,7 +24,7 @@ public:
    BSON::Value next()
    {
       if (mongoc_cursor_next(cursor.get(), &bson)) {
-         return BSON::BSONC::Type(bson);
+         return BSON::BSONCType(bson);
       } else {
          bson_error_t error;
 

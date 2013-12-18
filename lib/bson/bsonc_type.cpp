@@ -5,7 +5,7 @@
 
 namespace BSON {
 
-BSONC::Type::Type (const bson_t *b, const bson_iter_t * iter) :
+BSONCType::BSONCType (const bson_t *b, const bson_iter_t * iter) :
    impl(b),
    bson_offset(bson_get_data(iter->bson) - bson_get_data(b)),
    bson_len(iter->bson->len),
@@ -14,7 +14,7 @@ BSONC::Type::Type (const bson_t *b, const bson_iter_t * iter) :
 {
 }
 
-BSONC::Type::Type (const bson_t *b) :
+BSONCType::BSONCType (const bson_t *b) :
    impl(b),
    bson_offset(0),
    bson_len(b->len),
@@ -23,7 +23,7 @@ BSONC::Type::Type (const bson_t *b) :
 {
 }
 
-bool BSONC::Type::init_iter(bson_t *bson, bson_iter_t *iter) const {
+bool BSONCType::init_iter(bson_t *bson, bson_iter_t *iter) const {
    bson_init_static(bson, bson_get_data(impl) + bson_offset, bson_len);
    bson_iter_init(iter, bson);
 
@@ -35,49 +35,49 @@ bool BSONC::Type::init_iter(bson_t *bson, bson_iter_t *iter) const {
    }
 }
 
-Value::Type BSONC::Type::get_type() const
+ValueType BSONCType::get_type() const
 {
    bson_t bson;
    bson_iter_t iter;
 
    if (is_root) {
-      return Value::Type::Document;
+      return ValueType::Document;
    } else {
       init_iter(&bson, &iter);
 
-      return (Value::Type)bson_iter_type(&iter);
+      return (ValueType)bson_iter_type(&iter);
    }
 }
 
-Value::Impl * BSONC::Type::clone(Value::Impl * storage) const
+ValueImpl * BSONCType::clone(ValueImpl * storage) const
 {
    bson_t bson;
    bson_iter_t iter;
 
    if (is_root) {
-      return new (storage) Type(impl);
+      return new (storage) BSONCType(impl);
    } else {
       init_iter(&bson, &iter);
 
-      return new (storage) Type(impl, &iter);
+      return new (storage) BSONCType(impl, &iter);
    }
 }
 
-Value::Iterator::Impl * BSONC::Type::clone(Value::Iterator::Impl * storage) const
+ValueIteratorImpl * BSONCType::clone(ValueIteratorImpl * storage) const
 {
    bson_t bson;
    bson_iter_t iter;
 
    if (is_root) {
-      return new (storage) Type(impl);
+      return new (storage) BSONCType(impl);
    } else {
       init_iter(&bson, &iter);
 
-      return new (storage) Type(impl, &iter);
+      return new (storage) BSONCType(impl, &iter);
    }
 }
 
-const char * BSONC::Type::to_utf8() const {
+const char * BSONCType::to_utf8() const {
    bson_t bson;
    bson_iter_t iter;
 
@@ -86,7 +86,7 @@ const char * BSONC::Type::to_utf8() const {
    return bson_iter_utf8(&iter, NULL);
 }
 
-int32_t BSONC::Type::to_int32() const {
+int32_t BSONCType::to_int32() const {
    bson_t bson;
    bson_iter_t iter;
 
@@ -95,7 +95,7 @@ int32_t BSONC::Type::to_int32() const {
    return bson_iter_int32(&iter);
 }
 
-std::tuple<const uint8_t *, size_t> BSONC::Type::to_bson() const
+std::tuple<const uint8_t *, size_t> BSONCType::to_bson() const
 {
    bson_t bson;
    bson_iter_t iter;
@@ -108,7 +108,7 @@ std::tuple<const uint8_t *, size_t> BSONC::Type::to_bson() const
    } else {
       init_iter(&bson, &iter);
 
-      if (get_type() == Value::Type::Document) {
+      if (get_type() == ValueType::Document) {
          bson_iter_document(&iter, &len, &buf);
       } else {
          bson_iter_array(&iter, &len, &buf);
@@ -119,7 +119,7 @@ std::tuple<const uint8_t *, size_t> BSONC::Type::to_bson() const
 }
 
 void
-BSONC::Type::print (std::ostream & stream) const
+BSONCType::print (std::ostream & stream) const
 {
    bson_t bson;
    bson_iter_t iter;
@@ -133,7 +133,7 @@ BSONC::Type::print (std::ostream & stream) const
 }
 
 Value
-BSONC::Type::operator [] (int i) const
+BSONCType::operator [] (int i) const
 {
    const uint8_t *buf;
    size_t len;
@@ -150,7 +150,7 @@ BSONC::Type::operator [] (int i) const
 }
 
 Value
-BSONC::Type::operator [] (const char * str) const
+BSONCType::operator [] (const char * str) const
 {
    const uint8_t *buf;
    size_t len;
@@ -163,7 +163,7 @@ BSONC::Type::operator [] (const char * str) const
    return BSONCUtils::convert(impl, &child, str);
 }
 
-Value::Iterator BSONC::Type::begin() const
+ValueIterator BSONCType::begin() const
 {
    bson_t bson;
    bson_iter_t iter;
@@ -174,15 +174,15 @@ Value::Iterator BSONC::Type::begin() const
       bson_iter_next(&iter);
    }
 
-   return Value::Iterator(BSONC::Type(impl, &iter));
+   return ValueIterator(BSONCType(impl, &iter));
 }
 
-Value::Iterator BSONC::Type::end() const
+ValueIterator BSONCType::end() const
 {
-   return Value::Iterator::End();
+   return ValueIteratorEnd();
 }
 
-void BSONC::Type::next()
+void BSONCType::next()
 {
    bson_t bson;
    bson_iter_t iter;
@@ -194,30 +194,30 @@ void BSONC::Type::next()
    iter_offset = iter.offset;
 }
 
-bool BSONC::Type::is_end() const
+bool BSONCType::is_end() const
 {
    bson_t bson;
    bson_iter_t iter;
    return init_iter(&bson, &iter);
 }
 
-bool BSONC::Type::is_equal(const Value::Iterator::Impl &other) const
+bool BSONCType::is_equal(const ValueIteratorImpl &other) const
 {
    if (is_end()) {
-      return (static_cast<const Value::Iterator::Impl *>(this) == &other);
+      return (static_cast<const ValueIteratorImpl *>(this) == &other);
    } else {
       return other.is_end();
    }
 }
 
 Value
-BSONC::Type::to_value() const
+BSONCType::to_value() const
 {
    return Value(*this);
 }
 
 const char *
-BSONC::Type::key() const
+BSONCType::key() const
 {
    bson_t bson;
    bson_iter_t iter;

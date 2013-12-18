@@ -2,38 +2,38 @@
 
 namespace BSON {
 
-Value::Iterator::End::End() { }
+ValueIteratorEnd::ValueIteratorEnd() { }
 
-void Value::Iterator::End::next()
+void ValueIteratorEnd::next()
 {
-   throw Value::Exception("No support for next()");
+   throw ValueException("No support for next()");
 }
 
-bool Value::Iterator::End::is_equal(const Impl &other) const
+bool ValueIteratorEnd::is_equal(const ValueIteratorImpl &other) const
 {
    return is_end() && other.is_end();
 }
 
-bool Value::Iterator::End::is_end() const
+bool ValueIteratorEnd::is_end() const
 {
    return true;
 }
 
 Value
-Value::Iterator::End::to_value() const
+ValueIteratorEnd::to_value() const
 {
-   throw Value::Exception("No support for to_value()");
+   throw ValueException("No support for to_value()");
 }
 
 const char *
-Value::Iterator::End::key() const
+ValueIteratorEnd::key() const
 {
-   throw Value::Exception("No support for key()");
+   throw ValueException("No support for key()");
 }
 
-auto Value::Iterator::End::clone(Impl * storage) const -> Impl *
+auto ValueIteratorEnd::clone(ValueIteratorImpl * storage) const -> ValueIteratorImpl *
 {
-   return new (storage) End();
+   return new (storage) ValueIteratorEnd();
 }
 
 }

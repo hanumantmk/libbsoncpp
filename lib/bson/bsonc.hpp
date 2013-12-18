@@ -5,21 +5,21 @@
 
 namespace BSON {
 
+class BSONCImpl;
+
 class BSONC : public Document {
 public:
    class Type;
 
 private:
    friend class BSONCUtils;
-   class Impl;
-   class Iterator;
 
    friend class Type;
    friend class Iterator;
 
 private:
-   BSONC(const std::shared_ptr<Impl> &i);
-   std::shared_ptr<Impl> impl;
+   BSONC(const std::shared_ptr<BSONCImpl> &i);
+   std::shared_ptr<BSONCImpl> impl;
 
 protected:
    void push(const char * key, bool is_array);
@@ -32,8 +32,8 @@ protected:
 public:
    BSONC();
 
-   Value::Type get_type () const;
-   auto clone(Value::Impl * storage) const -> Value::Impl *;
+   ValueType get_type () const;
+   auto clone(ValueImpl * storage) const -> ValueImpl *;
 
    template <class ...T>
    BSONC(const T& ...t) : BSONC()
@@ -54,9 +54,9 @@ public:
 
    Document & to_document();
 
-   Value::Iterator begin() const;
+   ValueIterator begin() const;
 
-   Value::Iterator end() const;
+   ValueIterator end() const;
 
    BSONCPP_VALUE_GUARD
 };

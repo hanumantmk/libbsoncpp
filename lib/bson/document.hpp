@@ -9,7 +9,7 @@
 
 namespace BSON {
 
-class Document : public Value::Impl {
+class Document : public ValueImpl {
 private:
    void pop(bool arr) {
       if (! in_progress()) {

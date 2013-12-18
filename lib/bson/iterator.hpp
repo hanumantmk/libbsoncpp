@@ -5,39 +5,37 @@
 
 #define BSONCPP_VALUE_ITERATOR_GUARD \
 protected: \
-   virtual void magicSizeGuard(Value::Iterator v) const { \
-      static_assert(sizeof(*this) <= Value::Iterator::storage_size, "Type too large to fit in Value::Iterator"); \
-      static_assert(alignof(decltype(*this)) <= Value::Iterator::storage_align, "Type too large to align in Value::Iterator"); \
+   virtual void magicSizeGuard(ValueIterator v) const { \
+      static_assert(sizeof(*this) <= ValueIterator::storage_size, "Type too large to fit in ValueIterator"); \
+      static_assert(alignof(decltype(*this)) <= ValueIterator::storage_align, "Type too large to align in ValueIterator"); \
    }
 
 namespace BSON {
 
-class Value::Iterator {
-public:
-   class Impl;
-   class End;
+class ValueIteratorImpl;
 
+class ValueIterator {
+public:
    static const size_t storage_size = 60;
    static const size_t storage_align = 8;
-   bool inited = false;
 
 private:
    std::aligned_storage<storage_size, storage_align>::type storage;
-   Impl *impl;
-   Impl *clone_storage();
+   ValueIteratorImpl *impl;
+   ValueIteratorImpl *clone_storage();
 
 public:
-   Iterator ();
-   ~Iterator ();
+   ValueIterator ();
+   ~ValueIterator ();
 
-   Iterator( const Iterator& other );
-   const Iterator& operator=( const Iterator& other);
-   Iterator ( const Iterator::Impl & i);
+   ValueIterator( const ValueIterator& other );
+   const ValueIterator& operator=( const ValueIterator& other);
+   ValueIterator ( const ValueIteratorImpl & i);
 
-   Iterator &operator++();
+   ValueIterator &operator++();
 
-   bool operator==(const Iterator &other) const;
-   bool operator!=(const Iterator &other) const;
+   bool operator==(const ValueIterator &other) const;
+   bool operator!=(const ValueIterator &other) const;
 
    const char *key() const;
    Value value() const;
@@ -49,6 +47,6 @@ public:
 
 }
 
-std::ostream & operator << (std::ostream & out, const BSON::Value::Iterator &obj);
+std::ostream & operator << (std::ostream & out, const BSON::ValueIterator &obj);
 
 #endif

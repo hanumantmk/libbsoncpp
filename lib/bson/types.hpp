@@ -4,13 +4,14 @@
 #include <tuple>
 #include <array>
 #include "bson/value_impl.hpp"
+#include "bson/value.hpp"
 #include <ostream>
 
 namespace BSON {
 
-class Type : public Value::Impl
+class Type : public ValueImpl
 {
-   Value::Type type;
+   ValueType type;
 
    union Storage {
       const char * utf8;
@@ -21,7 +22,7 @@ class Type : public Value::Impl
       } bson;
    } u;
 
-   Type(Value::Type t, Storage & s) : type(t), u(s) {}
+   Type(ValueType t, Storage & s) : type(t), u(s) {}
 
 public:
    Type(const Type & t) : type(t.type), u(t.u) {}
@@ -29,40 +30,40 @@ public:
    static Type Int32(int32_t i) {
       Storage u;
       u.int32 = i;
-      return Type(Value::Type::Int32, u);
+      return Type(ValueType::Int32, u);
    }
 
    static Type Utf8(const char * utf8) {
       Storage u;
       u.utf8 = utf8;
-      return Type(Value::Type::Utf8, u);
+      return Type(ValueType::Utf8, u);
    }
 
    static Type Document(const uint8_t *buf, size_t len) {
       Storage u;
       u.bson.buf = buf;
       u.bson.len = len;
-      return Type(Value::Type::Document, u);
+      return Type(ValueType::Document, u);
    }
 
    static Type Array(const uint8_t *buf, size_t len) {
       Storage u;
       u.bson.buf = buf;
       u.bson.len = len;
-      return Type(Value::Type::Array, u);
+      return Type(ValueType::Array, u);
    }
 
    static Type Null() {
       Storage u;
-      return Type(Value::Type::Null, u);
+      return Type(ValueType::Null, u);
    }
 
-   Value::Type get_type() const
+   ValueType get_type() const
    {
       return type;
    }
 
-   auto clone(Impl * storage) const -> Impl *
+   auto clone(ValueImpl * storage) const -> ValueImpl *
    {
       return new (storage) Type(*this);
    }
@@ -83,10 +84,10 @@ public:
    void print (std::ostream & stream) const
    {
       switch (get_type()) {
-         case Value::Type::Int32:
+         case ValueType::Int32:
             stream << to_int32();
             break;
-         case Value::Type::Utf8:
+         case ValueType::Utf8:
             stream << to_utf8();
             break;
          default:

@@ -3,49 +3,49 @@
 
 namespace BSON {
 
-const char * Value::Impl::to_utf8() const
+const char * ValueImpl::to_utf8() const
 {
-   throw Value::Exception("No conversion to UTF8");
+   throw ValueException("No conversion to UTF8");
 }
 
-int32_t Value::Impl::to_int32() const
+int32_t ValueImpl::to_int32() const
 {
-   throw Value::Exception("No conversion to int32");
+   throw ValueException("No conversion to int32");
 }
 
-std::tuple<const uint8_t *, size_t> Value::Impl::to_bson() const
+std::tuple<const uint8_t *, size_t> ValueImpl::to_bson() const
 {
-   throw Value::Exception("No conversion to bson");
+   throw ValueException("No conversion to bson");
 }
 
-Value Value::Impl::operator[](const char * str) const
+Value ValueImpl::operator[](const char * str) const
 {
-   throw Value::Exception("No conversion to document available");
+   throw ValueException("No conversion to document available");
 }
 
-Value Value::Impl::operator[](int i) const
+Value ValueImpl::operator[](int i) const
 {
-   throw Value::Exception("No conversion to array available");
+   throw ValueException("No conversion to array available");
 }
 
-Document & Value::Impl::to_document()
+Document & ValueImpl::to_document()
 {
-   throw Value::Exception("No conversion to document available");
+   throw ValueException("No conversion to document available");
 }
 
-Value::Iterator Value::Impl::begin() const
+ValueIterator ValueImpl::begin() const
 {
-   throw Value::Exception("No begin() available");
+   throw ValueException("No begin() available");
 }
 
-Value::Iterator Value::Impl::end() const
+ValueIterator ValueImpl::end() const
 {
-   throw Value::Exception("No end() available");
+   throw ValueException("No end() available");
 }
 
 }
 
-std::ostream & operator << (std::ostream & out, const BSON::Value::Impl &obj)
+std::ostream & operator << (std::ostream & out, const BSON::ValueImpl &obj)
 {
    obj.print(out);
 

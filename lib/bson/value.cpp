@@ -9,9 +9,9 @@ Value::Value()
 {
 }
 
-auto Value::clone_storage() -> Impl *
+auto Value::clone_storage() -> ValueImpl *
 {
-   return static_cast<Impl *>(static_cast<void*>(&storage));
+   return static_cast<ValueImpl *>(static_cast<void*>(&storage));
 }
 
 Value::Value(const Value& other) :
@@ -22,7 +22,7 @@ Value::Value(const Value& other) :
    }
 }
 
-Value::Value ( const Value::Impl & i) :
+Value::Value ( const ValueImpl & i) :
    Value()
 {
    impl = i.clone(clone_storage());
@@ -48,7 +48,7 @@ const Value& Value::operator=( const Value& other)
       impl = other.impl->clone(clone_storage());
    } else {
       if (impl) {
-         impl->~Impl();
+         impl->~ValueImpl();
          impl = NULL;
       }
    }
@@ -59,11 +59,11 @@ const Value& Value::operator=( const Value& other)
 Value::~Value()
 {
    if (impl) {
-      impl->~Impl();
+      impl->~ValueImpl();
    }
 }
 
-Value::Type
+ValueType
 Value::get_type () const
 {
    return impl->get_type ();
@@ -110,12 +110,12 @@ Document & Value::to_document()
    return impl->to_document();
 }
 
-auto Value::begin() const -> Iterator
+auto Value::begin() const -> ValueIterator
 {
    return impl->begin();
 }
 
-auto Value::end() const -> Iterator
+auto Value::end() const -> ValueIterator
 {
    return impl->end();
 }

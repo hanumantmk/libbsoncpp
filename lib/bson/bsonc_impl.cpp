@@ -2,31 +2,31 @@
 
 namespace BSON {
 
-BSONC::Impl::Impl() :
+BSONCImpl::BSONCImpl() :
    is_static(false)
 {
    bson_init(&root);
 }
 
-BSONC::Impl::~Impl()
+BSONCImpl::~BSONCImpl()
 {
    if (! is_static) {
       bson_destroy(&root);
    }
 }
 
-const char * BSONC::Impl::nextKey ()
+const char * BSONCImpl::nextKey ()
 {
    sprintf(lastKeyBuf, "%d", storage.top().lastKey++);
    return (lastKeyBuf);
 }
 
-bson_t * BSONC::Impl::bottom()
+bson_t * BSONCImpl::bottom()
 {
    return &root;
 }
 
-bson_t * BSONC::Impl::top()
+bson_t * BSONCImpl::top()
 {
    if (storage.empty()) {
       return &root;
@@ -35,14 +35,14 @@ bson_t * BSONC::Impl::top()
    }
 }
 
-bson_t * BSONC::Impl::push(const char * key, bool is_array)
+bson_t * BSONCImpl::push(const char * key, bool is_array)
 {
    storage.emplace(top(), key, is_array);
 
    return top();
 }
 
-bool BSONC::Impl::is_array()
+bool BSONCImpl::is_array()
 {
    if (storage.empty()) {
       return false;
@@ -51,7 +51,7 @@ bool BSONC::Impl::is_array()
    }
 }
 
-void BSONC::Impl::pop()
+void BSONCImpl::pop()
 {
    storage.pop();
 }

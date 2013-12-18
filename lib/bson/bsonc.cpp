@@ -7,12 +7,12 @@
 
 namespace BSON {
 BSONC::BSONC() :
-   impl (new BSONC::Impl())
+   impl (new BSONCImpl())
 {
 
 }
 
-BSONC::BSONC(const std::shared_ptr<BSONC::Impl> &i) :
+BSONC::BSONC(const std::shared_ptr<BSONCImpl> &i) :
    impl (i)
 {
 }
@@ -23,12 +23,12 @@ Document & BSONC::to_document ()
    return *this;
 }
 
-Value::Type BSONC::get_type () const
+ValueType BSONC::get_type () const
 {
-   return Value::Type::Document;
+   return ValueType::Document;
 }
 
-auto BSONC::clone(Value::Impl * storage) const -> Value::Impl *
+auto BSONC::clone(ValueImpl * storage) const -> ValueImpl *
 {
    return new (storage) BSONC(impl);
 }
@@ -83,14 +83,14 @@ BSONC::append_single ( const char * key,
                       const Value&    v)
 {
    switch (v.get_type()) {
-      case Value::Type::Utf8:
+      case ValueType::Utf8:
          bson_append_utf8(impl->top(), key, -1, v.to_utf8(), -1);
          break;
-      case Value::Type::Int32:
+      case ValueType::Int32:
          bson_append_int32(impl->top(), key, -1, v.to_int32());
          break;
-      case Value::Type::Document:
-      case Value::Type::Array:
+      case ValueType::Document:
+      case ValueType::Array:
       {
          const uint8_t *buf;
          size_t len;
@@ -100,7 +100,7 @@ BSONC::append_single ( const char * key,
 
          bson_init_static (&tmp, (const bson_uint8_t *)buf, len);
 
-         if (v.get_type() == Value::Type::Document) {
+         if (v.get_type() == ValueType::Document) {
             bson_append_document (impl->top(), key, -1, &tmp);
          } else {
             bson_append_array (impl->top(), key, -1, &tmp);
@@ -127,18 +127,18 @@ BSONC::operator [] (const char * s) const
    return BSONCUtils::convert(impl->bottom(), impl->bottom(), s);
 }
 
-Value::Iterator BSONC::begin() const
+ValueIterator BSONC::begin() const
 {
    bson_iter_t iter;
    bson_iter_init(&iter, impl->bottom());
    bson_iter_next(&iter);
 
-   return Value::Iterator(BSONC::Type(impl->bottom(), &iter));
+   return ValueIterator(BSONCType(impl->bottom(), &iter));
 }
 
-Value::Iterator BSONC::end() const
+ValueIterator BSONC::end() const
 {
-   return Value::Iterator::End();
+   return ValueIteratorEnd();
 }
 
 }

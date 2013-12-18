@@ -2,11 +2,11 @@
 
 namespace BSON {
 
-BSONC::Impl::AppendLayer::AppendLayer()
+BSONCImpl::AppendLayer::AppendLayer()
 {
 }
 
-BSONC::Impl::AppendLayer::AppendLayer(bson_t *parent, const char * key, bool is_array) :
+BSONCImpl::AppendLayer::AppendLayer(bson_t *parent, const char * key, bool is_array) :
    parent(parent),
    is_array(is_array)
 {
@@ -17,7 +17,7 @@ BSONC::Impl::AppendLayer::AppendLayer(bson_t *parent, const char * key, bool is_
    }
 }
 
-BSONC::Impl::AppendLayer::~AppendLayer()
+BSONCImpl::AppendLayer::~AppendLayer()
 {
    if (is_array) {
       bson_append_array_end(parent, &bson);

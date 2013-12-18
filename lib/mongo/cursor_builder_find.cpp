@@ -16,8 +16,6 @@ CursorBuilderFind::CursorBuilderFind(const std::shared_ptr<CollectionImpl> & c, 
 
 std::unique_ptr<CursorImpl> CursorBuilderFind::to_cursor() const
 {
-   using namespace BSON;
-
    bson_t q;
    bson_t f;
 

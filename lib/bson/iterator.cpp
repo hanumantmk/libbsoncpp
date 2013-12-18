@@ -3,82 +3,81 @@
 
 namespace BSON {
 
-Value::Iterator::Iterator() :
-   inited(true)
+ValueIterator::ValueIterator()
 {
 }
 
-auto Value::Iterator::clone_storage() -> Impl *
+auto ValueIterator::clone_storage() -> ValueIteratorImpl *
 {
-   return static_cast<Impl *>(static_cast<void*>(&storage));
+   return static_cast<ValueIteratorImpl *>(static_cast<void*>(&storage));
 }
 
-Value::Iterator::Iterator(const Iterator& other) :
-   Iterator()
+ValueIterator::ValueIterator(const ValueIterator& other) :
+   ValueIterator()
 {
    impl = other.impl->clone(clone_storage());
 }
 
-Value::Iterator::Iterator ( const Iterator::Impl & i) :
-   Iterator()
+ValueIterator::ValueIterator ( const ValueIteratorImpl & i) :
+   ValueIterator()
 {
    impl = i.clone(clone_storage());
 }
 
-auto Value::Iterator::operator=( const Iterator& other) -> const Iterator &
+auto ValueIterator::operator=( const ValueIterator& other) -> const ValueIterator &
 {
    impl = other.impl->clone(clone_storage());
 
    return *this;
 }
 
-Value::Iterator::~Iterator()
+ValueIterator::~ValueIterator()
 {
-   impl->~Impl();
+   impl->~ValueIteratorImpl();
 }
 
-auto Value::Iterator::operator++() -> Iterator &
+auto ValueIterator::operator++() -> ValueIterator &
 {
    impl->next();
 
    return *this;
 }
 
-bool Value::Iterator::operator==(const Iterator &other) const
+bool ValueIterator::operator==(const ValueIterator &other) const
 {
    return impl->is_equal(*(other.impl));
 }
 
-bool Value::Iterator::operator!=(const Iterator &other) const
+bool ValueIterator::operator!=(const ValueIterator &other) const
 {
    return ! impl->is_equal(*(other.impl));
 }
 
-const char * Value::Iterator::key() const
+const char * ValueIterator::key() const
 {
    return impl->key();
 }
 
-Value Value::Iterator::value() const
+Value ValueIterator::value() const
 {
    return impl->to_value();
 }
 
 std::pair<const char *, Value>
-Value::Iterator::operator*()
+ValueIterator::operator*()
 {
    return std::make_pair(impl->key(), impl->to_value());
 }
 
 void
-Value::Iterator::print (std::ostream & stream) const
+ValueIterator::print (std::ostream & stream) const
 {
    impl->print(stream);
 }
 
 }
 
-std::ostream & operator << (std::ostream & out, const BSON::Value::Iterator &obj)
+std::ostream & operator << (std::ostream & out, const BSON::ValueIterator &obj)
 {
    obj.print(out);
 

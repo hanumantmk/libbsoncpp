@@ -80,7 +80,7 @@ void BSONCUtils::pp (std::ostream & stream, bson_iter_t *iter, int indent, bool 
 
 Value BSONCUtils::convert (const bson_t * root, const bson_iter_t * iter)
 {
-   return Value(BSONC::Type(root, iter));
+   return Value(BSONCType(root, iter));
 }
 
 Value BSONCUtils::convert (const bson_t *root, const bson_t * bson, const char * key)

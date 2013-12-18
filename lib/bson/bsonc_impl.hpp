@@ -1,7 +1,6 @@
 #ifndef BSONCPP_BSONC_IMPL_H
 #define BSONCPP_BSONC_IMPL_H
 
-#include "bson/bsonc.hpp"
 #include "bson/stack.hpp"
 
 extern "C" {
@@ -10,7 +9,7 @@ extern "C" {
 
 namespace BSON {
 
-class BSONC::Impl {
+class BSONCImpl {
    class AppendLayer {
    public:
       bson_t bson;
@@ -32,8 +31,8 @@ class BSONC::Impl {
    bool is_static;
 
 public:
-   Impl();
-   ~Impl();
+   BSONCImpl();
+   ~BSONCImpl();
 
    const char * nextKey ();
    bson_t *bottom();

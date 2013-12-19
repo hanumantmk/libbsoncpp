@@ -6,7 +6,7 @@ BSONCImpl::BSONCImpl() :
    buf_ptr((uint8_t *)malloc(256)),
    buf_len(256),
    writer(bson_writer_new(&buf_ptr, &buf_len, 0, &realloc)),
-   key("0", 1)
+   key("0")
 {
    bson_writer_begin(writer, &root);
 }
@@ -29,10 +29,22 @@ void BSONCImpl::clear()
 
 const Key & BSONCImpl::nextKey ()
 {
-   int i;
-   
-   i = sprintf(lastKeyBuf, "%d", storage.top().lastKey++);
-   key = Key(lastKeyBuf, i);
+   int x = storage.top().lastKey++;
+
+   if (x) {
+      int size = sizeof(lastKeyBuf) - 1;
+      int i = size;
+      lastKeyBuf[i] = '\0';
+
+      while (x > 0) {
+         i--;
+         lastKeyBuf[i] = (x % 10) + '0';
+         x = x / 10;
+      }
+      key = Key(lastKeyBuf + i, size - i);
+   } else {
+      key = "0";
+   }
 
    return key;
 }

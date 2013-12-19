@@ -31,7 +31,7 @@ class BSONCImpl {
 
    bson_t * root;
 
-   char lastKeyBuf[30];
+   char lastKeyBuf[11] = { 0 };
    Key key;
 
 public:

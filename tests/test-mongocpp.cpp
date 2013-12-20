@@ -14,6 +14,8 @@ main (int    argc,
 
    Collection col = c.get_collection( "test", "test");
 
+   col.insert({ BSONC("hello", "goodbye"), BSONC("hello", 12) });
+
    CollectionView v = col.find().fields("hello", 1, "_id", 0).sort("hello", -1);
 
    cout << "Count is: " << v.count() << endl;

@@ -15,6 +15,11 @@ enum class Query {
    PARTIAL           = 1 << 7,
 };
 
+enum class Insert {
+   NONE              = 0,
+   CONTINUE_ON_ERROR = 1 << 0,
+};
+
 }
 }
 

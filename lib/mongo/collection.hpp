@@ -24,6 +24,8 @@ public:
    {
       return CollectionView(impl, BSON::BSONC(t...));
    }
+
+   void insert(std::initializer_list<BSON::Value> lst, Flags::Insert i = Flags::Insert::NONE) const;
 };
 
 };

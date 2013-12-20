@@ -18,7 +18,13 @@ Cursor CollectionView::get(Flags::Query flags) const
    bson_t q;
    bson_t f;
 
-   Utils::to_bson_t(_query, &q);
+   BSON::BSONC bson("$query", _query);
+
+   if (_sort) {
+      bson.append("$orderby", _sort);
+   }
+
+   Utils::to_bson_t(bson, &q);
 
    if (_fields) {
       Utils::to_bson_t(_fields, &f);
@@ -29,6 +35,7 @@ Cursor CollectionView::get(Flags::Query flags) const
       (mongoc_query_flags_t) flags,
       _skip,
       _limit,
+      0,
       &q,
       (_fields ? &f : nullptr),
       nullptr

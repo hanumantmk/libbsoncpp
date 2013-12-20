@@ -16,6 +16,7 @@ friend class Collection;
 private:
    std::shared_ptr<CollectionImpl> _collection;
    BSON::Value _query;
+   BSON::Value _sort;
    BSON::Value _fields;
    uint32_t _skip = 0;
    uint32_t _limit = 0;
@@ -28,7 +29,7 @@ public:
    template <class ...T>
    CollectionView & sort(const T& ...t)
    {
-      _query.to_document().append("$orderby", '{', t..., '}');
+      _sort = BSON::BSONC(t...);
 
       return *this;
    }

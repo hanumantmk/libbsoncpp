@@ -22,11 +22,7 @@ public:
    template <class ...T>
    CollectionView find(const T& ...t) const
    {
-      if (sizeof...(T)) {
-         return CollectionView(impl, BSON::BSONC("$query", '{', t..., '}'));
-      } else {
-         return CollectionView(impl, BSON::BSONC("$query", '{', '}'));
-      }
+      return CollectionView(impl, BSON::BSONC(t...));
    }
 };
 

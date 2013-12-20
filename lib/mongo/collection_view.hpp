@@ -24,8 +24,6 @@ private:
    CollectionView(const std::shared_ptr<CollectionImpl> & c, const BSON::Value &query);
 
 public:
-   CollectionView & flags(Flags::Query flags);
-
    template <class ...T>
    CollectionView & sort(const T& ...t)
    {
@@ -46,6 +44,8 @@ public:
    }
 
    Cursor get(Flags::Query f = Flags::Query::NONE) const;
+
+   uint64_t count(Flags::Query f = Flags::Query::NONE) const;
 };
 
 }

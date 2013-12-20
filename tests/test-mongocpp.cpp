@@ -14,7 +14,11 @@ main (int    argc,
 
    Collection col = c.get_collection( "test", "test");
 
-   Cursor cursor = col.find().fields("hello", 1, "_id", 0).sort("hello", -1).limit(2).get();
+   CollectionView v = col.find().fields("hello", 1, "_id", 0).sort("hello", -1);
+
+   cout << "Count is: " << v.count() << endl;
+
+   Cursor cursor = v.limit(2).get();
 
    while ( Value v = cursor.next() ) {
       cout << v["hello"] << endl;

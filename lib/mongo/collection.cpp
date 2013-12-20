@@ -32,4 +32,16 @@ void Collection::insert(std::initializer_list<BSON::Value> lst, Flags::Insert fl
    }
 }
 
+void Collection::drop() const
+{
+   bson_error_t err;
+   bool r;
+   
+   r = mongoc_collection_drop(impl->collection.get(), &err);
+
+   if (! r) {
+      throw BSON::Exception(err.message);
+   }
+}
+
 }

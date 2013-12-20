@@ -26,6 +26,8 @@ public:
    }
 
    void insert(std::initializer_list<BSON::Value> lst, Flags::Insert i = Flags::Insert::NONE) const;
+
+   void drop() const;
 };
 
 };
